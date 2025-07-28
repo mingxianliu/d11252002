@@ -254,7 +254,7 @@
                     <!-- 動態生成的技術文章子項目將在這裡 -->
                 </div>
                 <button onclick="toggleProjectsSubmenu()" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
-                    專案作品
+                    實際案例
                 </button>
                 <div id="projects-submenu" class="ml-4 space-y-1 hidden">
                     <!-- 動態生成的專案子項目將在這裡 -->
@@ -307,7 +307,7 @@
                 <div class="max-w-4xl mx-auto">
                     <div class="text-center mb-12">
                         <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6">歡迎來到我的技術部落格</h1>
-                        <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">這裡是我分享技術心得、專案作品和實用工具的地方</p>
+                        <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">這裡是我分享技術心得、實際案例和實用工具的地方</p>
                     </div>
 
                     <!-- 特色區塊 -->
@@ -321,7 +321,7 @@
                             <p class="text-slate-600 dark:text-slate-400">分享程式開發、系統設計和技術趨勢的心得</p>
                         </div>
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">專案作品</h3>
+                            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">實際案例</h3>
                             <p class="text-slate-600 dark:text-slate-400">展示個人開發的應用程式和工具</p>
                         </div>
                     </div>
@@ -360,7 +360,7 @@
 
             <div id="projects-content" class="page-content hidden">
                 <div class="max-w-4xl mx-auto">
-                    <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">專案作品</h2>
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">實際案例</h2>
                     <p class="text-slate-600 dark:text-slate-400 mb-8">展示我的開發專案和作品</p>
                     <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md text-center">
                         <div class="text-6xl mb-4">🛠️</div>
@@ -533,7 +533,7 @@
                 'home': '首頁',
                 'commands': '互動式命令指南',
                 'articles': '技術文章',
-                'projects': '專案作品',
+                'projects': '實際案例',
                 'contact': '聯絡資訊'
             };
             document.getElementById('page-title').textContent = pageTitles[pageName] || '首頁';
@@ -587,7 +587,7 @@
                 '首頁': 'Home',
                 '互動式命令指南': 'Interactive Command Guide',
                 '技術文章': 'Technical Articles',
-                '專案作品': 'Projects',
+                '實際案例': 'Projects',
                 '聯絡資訊': 'Contact'
             };
             navItems.forEach(item => {
@@ -652,7 +652,7 @@
                 'Home': '首頁',
                 'Interactive Command Guide': '互動式命令指南',
                 'Technical Articles': '技術文章',
-                'Projects': '專案作品',
+                'Projects': '實際案例',
                 'Contact': '聯絡資訊'
             };
             navItems.forEach(item => {
@@ -672,12 +672,12 @@
                 const latestTitle = homeContent.querySelector('.bg-white h3');
 
                 if (title) title.textContent = '歡迎來到我的技術部落格';
-                if (subtitle) subtitle.textContent = '這裡是我分享技術心得、專案作品和實用工具的地方';
+                if (subtitle) subtitle.textContent = '這裡是我分享技術心得、實際案例和實用工具的地方';
                 
                 if (featureCards.length >= 3) {
                     featureCards[0].textContent = '互動式命令指南';
                     featureCards[1].textContent = '技術文章';
-                    featureCards[2].textContent = '專案作品';
+                    featureCards[2].textContent = '實際案例';
                 }
                 
                 if (descriptions.length >= 3) {
@@ -696,7 +696,7 @@
             }
         }
 
-        // 專案作品子選單切換
+        // 實際案例子選單切換
         function toggleProjectsSubmenu() {
             const submenu = document.getElementById('projects-submenu');
             submenu.classList.toggle('hidden');
@@ -839,7 +839,7 @@
             }
         }
 
-        // 動態掃描專案作品資料夾
+        // 動態掃描實際案例資料夾
         async function scanProjectsDirectory() {
             const projects = [];
             
@@ -870,27 +870,27 @@
             
             for (const project of allPossibleProjects) {
                 try {
-                    // 嘗試讀取專案資料夾中的txt檔案
+                    // 嘗試讀取實際案例資料夾中的txt檔案
                     const response = await fetch(`專案作品/${project}.txt`);
                     if (response.ok) {
                         projects.push(project);
-                        console.log(`找到專案: ${project}`);
+                        console.log(`找到實際案例: ${project}`);
                     }
                 } catch (error) {
-                    console.log(`專案 ${project} 不存在或無法訪問`);
+                    console.log(`實際案例 ${project} 不存在或無法訪問`);
                 }
             }
             
             if (projects.length === 0) {
-                console.log('沒有找到任何專案，使用預設項目');
+                console.log('沒有找到任何實際案例，使用預設項目');
                 projects.push('智慧校園', '智慧工地');
             }
             
-            console.log('最終專案列表:', projects);
+            console.log('最終實際案例列表:', projects);
             return projects;
         }
 
-        // 生成專案作品子選單
+        // 生成實際案例子選單
         function generateProjectSubmenu(projects) {
             const submenu = document.getElementById('projects-submenu');
             submenu.innerHTML = '';
@@ -967,17 +967,17 @@
                 try {
                     const response = await fetch(`專案作品/${projectName}.txt`);
                     if (!response.ok) {
-                        throw new Error('無法讀取專案配置檔案');
+                        throw new Error('無法讀取實際案例配置檔案');
                     }
                     
                     const projectUrl = await response.text();
                     const trimmedUrl = projectUrl.trim();
                     
                     if (!trimmedUrl) {
-                        throw new Error('專案URL為空');
+                        throw new Error('實際案例URL為空');
                     }
                     
-                    console.log('開啟專案:', projectName, 'URL:', trimmedUrl);
+                    console.log('開啟實際案例:', projectName, 'URL:', trimmedUrl);
                     
                     // 開啟新視窗
                     const newWindow = window.open(trimmedUrl, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
@@ -991,8 +991,8 @@
                     closePasswordModal();
                     
                 } catch (error) {
-                    console.error('開啟專案失敗:', error);
-                    alert(`無法開啟專案 ${projectName}：${error.message}\n\n請確保您正在使用HTTP服務器訪問網站（如 http://localhost:8001），而不是直接打開HTML檔案。`);
+                    console.error('開啟實際案例失敗:', error);
+                    alert(`無法開啟實際案例 ${projectName}：${error.message}\n\n請確保您正在使用HTTP服務器訪問網站（如 http://localhost:8001），而不是直接打開HTML檔案。`);
                 }
             } else {
                 // 密碼錯誤
@@ -1002,7 +1002,7 @@
             }
         }
 
-        // 顯示專案作品（移除這個函數，因為現在使用密碼保護）
+        // 顯示實際案例（移除這個函數，因為現在使用密碼保護）
         // async function showProject(projectName) { ... }
 
 
@@ -1027,7 +1027,7 @@
             // 載入首頁
             loadPage('home', document.querySelector('.nav-item'));
             
-            // 掃描專案作品資料夾
+            // 掃描實際案例資料夾
             scanProjectsFolder();
             
             // 掃描技術文章資料夾
