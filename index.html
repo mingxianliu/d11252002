@@ -275,8 +275,20 @@
         // 主題切換功能
         function initTheme() {
             const theme = localStorage.getItem('theme') || 'light';
+            const themeText = document.getElementById('theme-text');
+            const sunIcon = document.querySelector('.sun-icon');
+            const moonIcon = document.querySelector('.moon-icon');
+            
             if (theme === 'dark') {
                 document.documentElement.classList.add('dark');
+                themeText.textContent = '深色';
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeText.textContent = '淺色';
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
             }
         }
 
@@ -284,9 +296,20 @@
             const isDark = document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
             
-            // 更新主題文字
+            // 更新主題文字和圖標
             const themeText = document.getElementById('theme-text');
+            const sunIcon = document.querySelector('.sun-icon');
+            const moonIcon = document.querySelector('.moon-icon');
+            
             themeText.textContent = isDark ? '深色' : '淺色';
+            
+            if (isDark) {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
         }
 
         // 頁面載入功能
@@ -334,10 +357,140 @@
             
             if (currentLang === '中文') {
                 languageText.textContent = 'English';
-                // 這裡可以添加英文翻譯邏輯
+                translateToEnglish();
             } else {
                 languageText.textContent = '中文';
-                // 這裡可以添加中文翻譯邏輯
+                translateToChinese();
+            }
+        }
+
+        // 翻譯為英文
+        function translateToEnglish() {
+            // 更新頁面標題
+            const pageTitle = document.getElementById('page-title');
+            const pageTitles = {
+                '首頁': 'Home',
+                '互動式命令指南': 'Interactive Command Guide',
+                '技術文章': 'Technical Articles',
+                '專案作品': 'Projects',
+                '聯絡資訊': 'Contact'
+            };
+            if (pageTitles[pageTitle.textContent]) {
+                pageTitle.textContent = pageTitles[pageTitle.textContent];
+            }
+
+            // 更新側邊欄導航
+            const navItems = document.querySelectorAll('.nav-item');
+            const navTranslations = {
+                '首頁': 'Home',
+                '互動式命令指南': 'Interactive Command Guide',
+                '技術文章': 'Technical Articles',
+                '專案作品': 'Projects',
+                '聯絡資訊': 'Contact'
+            };
+            navItems.forEach(item => {
+                const text = item.textContent.trim();
+                if (navTranslations[text]) {
+                    item.textContent = navTranslations[text];
+                }
+            });
+
+            // 更新首頁內容
+            const homeContent = document.getElementById('home-content');
+            if (homeContent && !homeContent.classList.contains('hidden')) {
+                const title = homeContent.querySelector('h1');
+                const subtitle = homeContent.querySelector('p');
+                const featureCards = homeContent.querySelectorAll('h3');
+                const descriptions = homeContent.querySelectorAll('p:not(:first-child)');
+                const latestTitle = homeContent.querySelector('.bg-white h3');
+
+                if (title) title.textContent = 'Welcome to My Tech Blog';
+                if (subtitle) subtitle.textContent = 'Here I share technical insights, projects and useful tools';
+                
+                if (featureCards.length >= 3) {
+                    featureCards[0].textContent = 'Interactive Command Guide';
+                    featureCards[1].textContent = 'Technical Articles';
+                    featureCards[2].textContent = 'Projects';
+                }
+                
+                if (descriptions.length >= 3) {
+                    descriptions[1].textContent = 'Comprehensive command collection and shortcuts for multiple platforms to boost your development efficiency';
+                    descriptions[2].textContent = 'Share insights on programming, system design and tech trends';
+                    descriptions[3].textContent = 'Showcase personal applications and tools';
+                }
+
+                if (latestTitle) {
+                    latestTitle.textContent = 'Latest Updates';
+                    const updateTitle = homeContent.querySelector('.font-semibold');
+                    const updateDesc = homeContent.querySelector('.text-slate-700');
+                    if (updateTitle) updateTitle.textContent = 'Interactive Command Guide Launched';
+                    if (updateDesc) updateDesc.textContent = 'Completed a fully functional interactive command guide including Gemini CLI, Claude Code, Shell commands and more multi-platform tools.';
+                }
+            }
+        }
+
+        // 翻譯為中文
+        function translateToChinese() {
+            // 更新頁面標題
+            const pageTitle = document.getElementById('page-title');
+            const pageTitles = {
+                'Home': '首頁',
+                'Interactive Command Guide': '互動式命令指南',
+                'Technical Articles': '技術文章',
+                'Projects': '專案作品',
+                'Contact': '聯絡資訊'
+            };
+            if (pageTitles[pageTitle.textContent]) {
+                pageTitle.textContent = pageTitles[pageTitle.textContent];
+            }
+
+            // 更新側邊欄導航
+            const navItems = document.querySelectorAll('.nav-item');
+            const navTranslations = {
+                'Home': '首頁',
+                'Interactive Command Guide': '互動式命令指南',
+                'Technical Articles': '技術文章',
+                'Projects': '專案作品',
+                'Contact': '聯絡資訊'
+            };
+            navItems.forEach(item => {
+                const text = item.textContent.trim();
+                if (navTranslations[text]) {
+                    item.textContent = navTranslations[text];
+                }
+            });
+
+            // 更新首頁內容
+            const homeContent = document.getElementById('home-content');
+            if (homeContent && !homeContent.classList.contains('hidden')) {
+                const title = homeContent.querySelector('h1');
+                const subtitle = homeContent.querySelector('p');
+                const featureCards = homeContent.querySelectorAll('h3');
+                const descriptions = homeContent.querySelectorAll('p:not(:first-child)');
+                const latestTitle = homeContent.querySelector('.bg-white h3');
+
+                if (title) title.textContent = '歡迎來到我的技術部落格';
+                if (subtitle) subtitle.textContent = '這裡是我分享技術心得、專案作品和實用工具的地方';
+                
+                if (featureCards.length >= 3) {
+                    featureCards[0].textContent = '互動式命令指南';
+                    featureCards[1].textContent = '技術文章';
+                    featureCards[2].textContent = '專案作品';
+                }
+                
+                if (descriptions.length >= 3) {
+                    descriptions[1].textContent = '彙整多平台常用命令與快捷鍵，助您提升開發效率';
+                    descriptions[2].textContent = '分享程式開發、系統設計和技術趨勢的心得';
+                    descriptions[3].textContent = '展示個人開發的應用程式和工具';
+                }
+
+                if (latestTitle) {
+                    latestTitle.textContent = '最新動態';
+                    const updateTitle = homeContent.querySelector('.font-semibold');
+                    const updateDesc = homeContent.querySelector('.text-slate-700');
+                    if (updateTitle) updateTitle.textContent = '互動式命令指南上線';
+                    if (updateDesc) updateDesc.textContent = '完成了一個功能完整的互動式命令指南，包含 Gemini CLI、Claude Code、Shell 指令等多平台工具。';
+                }
             }
         }
 
