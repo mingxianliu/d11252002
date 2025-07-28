@@ -781,7 +781,9 @@
             
             if (hashedPassword === correctHash) {
                 // 密碼正確，開啟全螢幕新視窗
-                const url = `專案作品/${projectName}/index.html`;
+                // 使用當前網站的基礎URL來構建完整路徑
+                const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+                const url = `${baseUrl}/專案作品/${projectName}/index.html`;
                 console.log('開啟專案:', projectName, 'URL:', url);
                 const newWindow = window.open(url, '_blank', 'fullscreen=yes,scrollbars=yes,resizable=yes');
                 if (newWindow) {
