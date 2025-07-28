@@ -781,10 +781,15 @@
             
             if (hashedPassword === correctHash) {
                 // 密碼正確，開啟全螢幕新視窗
-                const url = `/專案作品/${projectName}/index.html`;
+                const url = `專案作品/${projectName}/index.html`;
+                console.log('開啟專案:', projectName, 'URL:', url);
                 const newWindow = window.open(url, '_blank', 'fullscreen=yes,scrollbars=yes,resizable=yes');
                 if (newWindow) {
                     newWindow.focus();
+                } else {
+                    console.error('無法開啟新視窗，可能是彈出視窗被阻擋');
+                    // 如果彈出視窗被阻擋，嘗試在當前視窗開啟
+                    window.location.href = url;
                 }
                 closePasswordModal();
             } else {
