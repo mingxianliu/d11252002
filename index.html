@@ -797,6 +797,21 @@
             try {
                 console.log('嘗試載入技術文章:', articleName);
                 
+                // 創建一個容器來包含iframe和返回按鈕
+                const container = document.createElement('div');
+                container.className = 'relative w-full h-screen';
+                
+                // 創建返回按鈕
+                const backButton = document.createElement('button');
+                backButton.className = 'absolute top-4 left-4 z-50 px-4 py-2 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 rounded-lg shadow-lg hover:bg-slate-700 dark:hover:bg-slate-300 transition-colors';
+                backButton.innerHTML = '← 返回';
+                backButton.onclick = () => {
+                    // 移除容器
+                    container.remove();
+                    // 重新載入首頁
+                    loadPage('home', document.querySelector('.nav-item'));
+                };
+                
                 // 在當前頁面載入技術文章內容
                 const iframe = document.createElement('iframe');
                 iframe.src = `技術文章/${articleName}`;
@@ -813,10 +828,14 @@
                     console.log('技術文章載入成功:', articleName);
                 };
                 
-                // 清空當前內容並載入文章
+                // 將返回按鈕和iframe添加到容器
+                container.appendChild(backButton);
+                container.appendChild(iframe);
+                
+                // 清空當前內容並載入容器
                 const contentArea = document.getElementById('page-content');
                 contentArea.innerHTML = '';
-                contentArea.appendChild(iframe);
+                contentArea.appendChild(container);
                 
                 // 更新頁面標題
                 document.getElementById('page-title').textContent = '技術文章';
