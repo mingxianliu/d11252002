@@ -309,17 +309,7 @@
         </footer>
     </div>
 
-    <!-- 密碼輸入模態框 -->
-    <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
-            <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">請輸入密碼</h3>
-            <input type="password" id="password-input" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 mb-4" placeholder="請輸入密碼">
-            <div class="flex space-x-3">
-                <button onclick="submitPassword()" class="flex-1 px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors">確認</button>
-                <button onclick="closePasswordModal()" class="flex-1 px-4 py-2 bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-400 dark:hover:bg-slate-500 transition-colors">取消</button>
-            </div>
-        </div>
-    </div>
+
 
     <script>
         // 主題切換功能
@@ -717,19 +707,17 @@
             
             for (const project of allPossibleProjects) {
                 try {
-                    // 嘗試載入專案的index.html檔案
-                    const response = await fetch(`專案作品/${project}/index.html`, { method: 'HEAD' });
+                    // 嘗試讀取專案資料夾中的txt檔案
+                    const response = await fetch(`專案作品/${project}.txt`);
                     if (response.ok) {
                         projects.push(project);
                         console.log(`找到專案: ${project}`);
                     }
                 } catch (error) {
-                    // 如果檔案不存在，跳過
                     console.log(`專案 ${project} 不存在或無法訪問`);
                 }
             }
             
-            // 如果沒有找到任何專案，使用預設項目
             if (projects.length === 0) {
                 console.log('沒有找到任何專案，使用預設項目');
                 projects.push('智慧校園', '智慧工地');
@@ -739,7 +727,7 @@
             return projects;
         }
 
-        // 生成專案子選單
+        // 生成專案作品子選單
         function generateProjectSubmenu(projects) {
             const submenu = document.getElementById('projects-submenu');
             submenu.innerHTML = '';
@@ -748,60 +736,45 @@
                 const button = document.createElement('button');
                 button.className = 'w-full text-left px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-600 text-slate-600 dark:text-slate-400 text-sm hover:bg-slate-200 dark:hover:bg-slate-500 transition-colors';
                 button.textContent = project;
-                button.onclick = () => showPasswordModal(project);
+                button.onclick = () => showProject(project);
                 submenu.appendChild(button);
             });
         }
 
-        // 顯示密碼輸入模態框
-        function showPasswordModal(projectName) {
-            const modal = document.getElementById('password-modal');
-            const input = document.getElementById('password-input');
-            modal.dataset.project = projectName;
-            modal.classList.remove('hidden');
-            input.focus();
-            input.value = '';
-        }
-
-        // 關閉密碼輸入模態框
-        function closePasswordModal() {
-            const modal = document.getElementById('password-modal');
-            modal.classList.add('hidden');
-        }
-
-        // 提交密碼
-        function submitPassword() {
-            const modal = document.getElementById('password-modal');
-            const input = document.getElementById('password-input');
-            const projectName = modal.dataset.project;
-            const password = input.value;
-            
-            // 使用簡單的雜湊驗證，實際應用中應該使用後端驗證
-            const hashedPassword = btoa(password + 'salt'); // 簡單的base64編碼
-            const correctHash = 'NTQ4NTAzODdzYWx0'; // 54850387的雜湊值
-            
-            if (hashedPassword === correctHash) {
-                // 密碼正確，開啟全螢幕新視窗
-                // 使用當前網站的基礎URL來構建完整路徑
-                const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
-                const url = `${baseUrl}/專案作品/${projectName}/index.html`;
-                console.log('開啟專案:', projectName, 'URL:', url);
-                const newWindow = window.open(url, '_blank', 'fullscreen=yes,scrollbars=yes,resizable=yes');
+        // 顯示專案作品
+        async function showProject(projectName) {
+            try {
+                // 讀取專案對應的txt檔案來獲取URL
+                const response = await fetch(`專案作品/${projectName}.txt`);
+                if (!response.ok) {
+                    throw new Error('無法讀取專案配置檔案');
+                }
+                
+                const projectUrl = await response.text();
+                const trimmedUrl = projectUrl.trim();
+                
+                if (!trimmedUrl) {
+                    throw new Error('專案URL為空');
+                }
+                
+                console.log('開啟專案:', projectName, 'URL:', trimmedUrl);
+                
+                // 開啟新視窗
+                const newWindow = window.open(trimmedUrl, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
                 if (newWindow) {
                     newWindow.focus();
                 } else {
                     console.error('無法開啟新視窗，可能是彈出視窗被阻擋');
-                    // 如果彈出視窗被阻擋，嘗試在當前視窗開啟
-                    window.location.href = url;
+                    window.location.href = trimmedUrl;
                 }
-                closePasswordModal();
-            } else {
-                // 密碼錯誤
-                alert('密碼錯誤！');
-                input.value = '';
-                input.focus();
+                
+            } catch (error) {
+                console.error('開啟專案失敗:', error);
+                alert(`無法開啟專案 ${projectName}：${error.message}`);
             }
         }
+
+
 
         // 側邊欄切換功能
         function toggleSidebar() {
