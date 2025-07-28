@@ -400,7 +400,7 @@
     </div>
 
     <!-- 密碼輸入模態框 -->
-    <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 hidden">
         <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
             <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">專案保護</h3>
             <p class="text-slate-600 dark:text-slate-400 mb-6">請輸入專案密碼以繼續：</p>
@@ -836,6 +836,7 @@
             const modal = document.getElementById('password-modal');
             const input = document.getElementById('password-input');
             modal.dataset.project = projectName;
+            modal.style.display = 'flex';
             modal.classList.remove('hidden');
             input.focus();
             input.value = '';
@@ -844,7 +845,14 @@
         // 關閉密碼輸入模態框
         function closePasswordModal() {
             const modal = document.getElementById('password-modal');
+            const input = document.getElementById('password-input');
             modal.classList.add('hidden');
+            input.value = '';
+            
+            // 確保模態框完全隱藏後，重新啟用頁面交互
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
         }
 
         // 提交密碼
