@@ -794,23 +794,42 @@
 
         // 顯示技術文章
         function showArticle(articleName) {
-            // 在當前頁面載入技術文章內容
-            const iframe = document.createElement('iframe');
-            iframe.src = `技術文章/${articleName}`;
-            iframe.className = 'w-full h-screen border-0';
-            
-            // 清空當前內容並載入文章
-            const contentArea = document.getElementById('page-content');
-            contentArea.innerHTML = '';
-            contentArea.appendChild(iframe);
-            
-            // 更新頁面標題
-            document.getElementById('page-title').textContent = '技術文章';
-            
-            // 隱藏所有頁面內容
-            document.querySelectorAll('.page-content').forEach(content => {
-                content.classList.add('hidden');
-            });
+            try {
+                console.log('嘗試載入技術文章:', articleName);
+                
+                // 在當前頁面載入技術文章內容
+                const iframe = document.createElement('iframe');
+                iframe.src = `技術文章/${articleName}`;
+                iframe.className = 'w-full h-screen border-0';
+                
+                // 添加載入錯誤處理
+                iframe.onerror = function() {
+                    console.error('iframe載入失敗:', articleName);
+                    alert(`無法載入技術文章：${articleName}\n\n請確保您正在使用HTTP服務器訪問網站（如 http://localhost:8001），而不是直接打開HTML檔案。`);
+                };
+                
+                // 添加載入成功處理
+                iframe.onload = function() {
+                    console.log('技術文章載入成功:', articleName);
+                };
+                
+                // 清空當前內容並載入文章
+                const contentArea = document.getElementById('page-content');
+                contentArea.innerHTML = '';
+                contentArea.appendChild(iframe);
+                
+                // 更新頁面標題
+                document.getElementById('page-title').textContent = '技術文章';
+                
+                // 隱藏所有頁面內容
+                document.querySelectorAll('.page-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+            } catch (error) {
+                console.error('顯示技術文章時發生錯誤:', error);
+                alert(`載入技術文章時發生錯誤：${error.message}\n\n請確保您正在使用HTTP服務器訪問網站。`);
+            }
         }
 
         // 掃描專案作品資料夾
