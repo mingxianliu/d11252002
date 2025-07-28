@@ -1,0 +1,39 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem"],
+      "env": {
+        "MCP_FILESYSTEM_ROOT": "."
+      }
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sqlite"],
+      "env": {
+        "MCP_SQLITE_DB_PATH": "./data/database.sqlite"
+      }
+    }
+  },
+  "permissions": {
+    "github": {
+      "allowedOperations": ["read", "issues", "prs"],
+      "deniedOperations": ["delete", "admin"]
+    },
+    "filesystem": {
+      "allowedPaths": ["./src", "./docs", "./tests"],
+      "deniedPaths": ["./node_modules", "./.git", "./.env"]
+    },
+    "sqlite": {
+      "allowedOperations": ["select", "insert", "update"],
+      "deniedOperations": ["drop", "delete"]
+    }
+  }
+} 

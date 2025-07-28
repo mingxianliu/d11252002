@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allowedCommands": [
+      "git",
+      "npm", 
+      "yarn",
+      "node",
+      "npx",
+      "echo",
+      "ls",
+      "cat",
+      "find",
+      "grep"
+    ],
+    "deniedCommands": [
+      "rm -rf",
+      "sudo",
+      "chmod 777",
+      "dd",
+      "mkfs"
+    ]
+  },
+  "model": "claude-3-5-sonnet-20241022",
+  "maxTokens": 4000,
+  "temperature": 0.1,
+  "hooks": {
+    "preToolUse": "檢查工具使用權限",
+    "postToolUse": "記錄工具使用日誌",
+    "userPromptSubmit": "驗證用戶輸入"
+  }
+} 
