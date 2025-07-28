@@ -1,0 +1,35 @@
+# 系統檔案
+.DS_Store
+Thumbs.db
+
+# 編輯器檔案
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 備份檔案
+*.bak
+*.backup
+* copy.html*
+
+# 圖片檔案（大檔案）
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+
+# 其他大檔案
+*.pdf
+*.zip
+*.rar
+*.7z
+
+# 日誌檔案
+*.log
+
+# 暫存檔案
+*.tmp
+*.temp 
