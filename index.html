@@ -65,6 +65,22 @@
                 <span class="text-xl">⚙️</span> Zibri/gemini-cli
             </button>
         </nav>
+        <div class="sticky top-0 bg-slate-100/80 backdrop-blur-sm z-10 mb-8">
+            <div class="border-b border-slate-300 flex flex-wrap justify-center gap-2">
+                <button id="main-btn-gemini" class="main-tab active text-lg md:text-xl font-bold py-4 px-6">
+                    <span class="mr-2">🚀</span> Gemini CLI
+                </button>
+                <button id="main-btn-claude" class="main-tab inactive text-lg md:text-xl font-bold py-4 px-6">
+                    <span class="mr-2">💡</span> Claude Code
+                </button>
+                <button id="main-btn-shell" class="main-tab inactive text-lg md:text-xl font-bold py-4 px-6">
+                    <span class="mr-2">🐚</span> Shell 常用指令
+                </button>
+                <button id="main-btn-hotkeys" class="main-tab inactive text-lg md:text-xl font-bold py-4 px-6">
+                    <span class="mr-2">⌨️</span> 鍵盤快捷鍵
+                </button>
+            </div>
+        </div>
 
         <main>
             <!-- Google CLI Content -->
@@ -155,11 +171,271 @@
                 </div>
             </div>
         </main>
+        <!-- Hotkeys Content -->
+        <div id="content-hotkeys" class="hidden">
+            <section class="bg-white p-6 rounded-xl shadow-md mb-8">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">鍵盤快捷鍵大全</h2>
+                <p class="text-slate-600 mb-6">本區彙整 Windows、Mac、Linux/Shell 及 VS Code/Cursor 編輯器的常用快捷鍵，助您大幅提升操作效率。</p>
+                <nav class="flex flex-wrap justify-center mb-8 gap-2 md:gap-4">
+                    <button data-target="hotkeys-windows" class="sub-tab active px-4 py-2 font-semibold rounded-lg border transition-colors duration-300">Windows</button>
+                    <button data-target="hotkeys-mac" class="sub-tab inactive px-4 py-2 font-semibold rounded-lg border transition-colors duration-300">Mac</button>
+                    <button data-target="hotkeys-linux" class="sub-tab inactive px-4 py-2 font-semibold rounded-lg border transition-colors duration-300">Linux / Shell</button>
+                    <button data-target="hotkeys-vscode" class="sub-tab inactive px-4 py-2 font-semibold rounded-lg border transition-colors duration-300">VS Code / Cursor</button>
+                </nav>
+                <div id="hotkeys-windows" class="hotkeys-content"></div>
+                <div id="hotkeys-mac" class="hotkeys-content hidden"></div>
+                <div id="hotkeys-linux" class="hotkeys-content hidden"></div>
+                <div id="hotkeys-vscode" class="hotkeys-content hidden"></div>
+            </section>
+        </div>
 
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // Hotkeys 資料庫
+        const HOTKEYS_DB = {
+            windows: [
+                { category: '基本快捷鍵', keys: [
+                    { k: 'Ctrl + C', desc: '複製' },
+                    { k: 'Ctrl + V', desc: '貼上' },
+                    { k: 'Ctrl + X', desc: '剪下' },
+                    { k: 'Ctrl + Z', desc: '復原' },
+                    { k: 'Ctrl + Y', desc: '重做' },
+                    { k: 'Ctrl + A', desc: '全選' },
+                    { k: 'Ctrl + S', desc: '儲存' },
+                    { k: 'Ctrl + F', desc: '搜尋/尋找' },
+                ]},
+                { category: '視窗管理', keys: [
+                    { k: 'Alt + Tab', desc: '切換應用程式' },
+                    { k: 'Alt + F4', desc: '關閉目前程式' },
+                    { k: 'Windows鍵 + D', desc: '顯示/隱藏桌面' },
+                    { k: 'Windows鍵 + L', desc: '鎖定電腦' },
+                    { k: 'Windows鍵 + M', desc: '最小化所有視窗' },
+                ]},
+                { category: '系統功能', keys: [
+                    { k: 'Windows鍵', desc: '開啟開始功能表' },
+                    { k: 'Windows鍵 + E', desc: '開啟檔案總管' },
+                    { k: 'Windows鍵 + I', desc: '開啟設定' },
+                    { k: 'Windows鍵 + R', desc: '開啟執行對話框' },
+                    { k: 'Windows鍵 + S', desc: '開啟搜尋' },
+                ]},
+                { category: '視窗排列', keys: [
+                    { k: 'Windows鍵 + 左/右箭頭', desc: '視窗貼齊左/右半邊' },
+                    { k: 'Windows鍵 + 上箭頭', desc: '最大化視窗' },
+                    { k: 'Windows鍵 + 下箭頭', desc: '最小化視窗' },
+                    { k: 'Windows鍵 + Z', desc: '開啟貼齊配置（Win11）' },
+                ]},
+                { category: '多重桌面', keys: [
+                    { k: 'Windows鍵 + Tab', desc: '開啟工作檢視' },
+                    { k: 'Windows鍵 + Ctrl + D', desc: '建立新虛擬桌面' },
+                    { k: 'Windows鍵 + Ctrl + 左/右箭頭', desc: '切換虛擬桌面' },
+                    { k: 'Windows鍵 + Ctrl + F4', desc: '關閉虛擬桌面' },
+                ]},
+                { category: '截圖與輸入', keys: [
+                    { k: 'PrtScn', desc: '截取全螢幕到剪貼簿' },
+                    { k: 'Windows鍵 + Shift + S', desc: '選取範圍截圖' },
+                    { k: 'Windows鍵 + PrtScn', desc: '截圖並儲存到檔案' },
+                    { k: 'Windows鍵 + V', desc: '開啟剪貼簿歷史' },
+                    { k: 'Windows鍵 + . 或 ;', desc: '開啟表情符號面板' },
+                    { k: 'Windows鍵 + H', desc: '啟動語音輸入' },
+                ]},
+                { category: '檔案管理', keys: [
+                    { k: 'F2', desc: '重新命名檔案' },
+                    { k: 'F5', desc: '重新整理' },
+                    { k: 'Ctrl + Shift + N', desc: '建立新資料夾' },
+                    { k: 'Shift + Delete', desc: '永久刪除（不進資源回收筒）' },
+                ]},
+                { category: 'F功能鍵', keys: [
+                    { k: 'F1', desc: '顯示說明' },
+                    { k: 'F2', desc: '重新命名' },
+                    { k: 'F3', desc: '開啟搜尋' },
+                    { k: 'F5', desc: '重新整理' },
+                    { k: 'F11', desc: '全螢幕模式切換' },
+                    { k: 'F12', desc: '另存新檔' },
+                ]},
+                { category: '工作列', keys: [
+                    { k: 'Windows鍵 + 數字鍵(1-9)', desc: '開啟工作列第N個應用程式' },
+                    { k: 'Windows鍵 + Shift + 數字鍵', desc: '開啟新執行個體' },
+                    { k: 'Windows鍵 + T', desc: '切換工作列應用程式' },
+                ]},
+            ],
+            mac: [
+                { category: '系統與應用操作', keys: [
+                    { k: 'Command + C', desc: '複製' },
+                    { k: 'Command + X', desc: '剪下' },
+                    { k: 'Command + V', desc: '貼上' },
+                    { k: 'Command + Z', desc: '還原' },
+                    { k: 'Shift + Command + Z', desc: '重做' },
+                    { k: 'Command + A', desc: '全選' },
+                    { k: 'Command + F', desc: '搜尋' },
+                    { k: 'Command + S', desc: '儲存' },
+                    { k: 'Command + Q', desc: '退出應用程式' },
+                    { k: 'Option + Command + Esc', desc: '強制退出應用程式' },
+                    { k: 'Command + Tab', desc: '切換應用程式' },
+                    { k: 'Command + H', desc: '隱藏當前應用程式' },
+                    { k: 'Option + Command + H', desc: '隱藏其他應用' },
+                    { k: 'Command + M', desc: '最小化視窗' },
+                    { k: 'Option + Command + M', desc: '最小化所有視窗' },
+                    { k: 'Command + W', desc: '關閉視窗' },
+                    { k: 'Option + Command + W', desc: '關閉所有視窗' },
+                    { k: 'Control + Command + F', desc: '切換全螢幕模式' },
+                ]},
+                { category: 'Finder 與檔案管理', keys: [
+                    { k: 'Command + N', desc: '開啟新 Finder 視窗' },
+                    { k: 'Shift + Command + N', desc: '建立新資料夾' },
+                    { k: 'Shift + Command + D', desc: '前往桌面' },
+                    { k: 'Shift + Command + O', desc: '前往文件' },
+                    { k: 'Option + Command + L', desc: '前往下載' },
+                    { k: 'Command + D', desc: '複製所選檔案' },
+                    { k: 'Command + Delete', desc: '丟棄至垃圾桶' },
+                    { k: 'Shift + Command + Delete', desc: '清空垃圾桶' },
+                    { k: 'Command + I', desc: '顯示「取得資訊」' },
+                    { k: 'Command + R', desc: '重新整理' },
+                    { k: 'Command + [ / ]', desc: '前往上一層/下一層' },
+                    { k: 'Command + 1/2/3/4', desc: '切換不同檢視模式' },
+                ]},
+                { category: '螢幕截圖與錄影', keys: [
+                    { k: 'Shift + Command + 3', desc: '全螢幕截圖' },
+                    { k: 'Shift + Command + 4', desc: '選取區域截圖' },
+                    { k: 'Shift + Command + 4, Space', desc: '特定視窗截圖' },
+                    { k: 'Shift + Command + 5', desc: '啟動截圖/錄影工具' },
+                ]},
+                { category: '文字輸入與編輯', keys: [
+                    { k: 'Command + B', desc: '粗體' },
+                    { k: 'Command + I', desc: '斜體' },
+                    { k: 'Command + U', desc: '底線' },
+                    { k: 'Command + K', desc: '插入/編輯超連結' },
+                    { k: 'Command + T', desc: '顯示/隱藏字體視窗' },
+                    { k: 'Command + ←/→', desc: '行首/行尾' },
+                    { k: 'Command + ↑/↓', desc: '文件首/尾' },
+                    { k: 'Option + ←/→', desc: '以單字為單位移動' },
+                    { k: 'Option + Delete', desc: '刪除游標左側字元' },
+                ]},
+                { category: '睡眠、登出與關機', keys: [
+                    { k: 'Control + Command + Q', desc: '鎖定螢幕' },
+                    { k: 'Option + Command + Power', desc: '進入睡眠' },
+                    { k: 'Control + Power', desc: '顯示睡眠/重啟/關機選單' },
+                    { k: 'Control + Command + Power', desc: '立即重新啟動' },
+                    { k: 'Control + Option + Command + Power', desc: '立即關機' },
+                    { k: 'Shift + Command + Q', desc: '登出' },
+                ]},
+            ],
+            linux: [
+                { category: '光標移動', keys: [
+                    { k: 'Ctrl + A', desc: '移到行首' },
+                    { k: 'Ctrl + E', desc: '移到行尾' },
+                    { k: 'Ctrl + F', desc: '向右移動一字元' },
+                    { k: 'Ctrl + B', desc: '向左移動一字元' },
+                    { k: 'Alt + F', desc: '向右移動一個單字' },
+                    { k: 'Alt + B', desc: '向左移動一個單字' },
+                    { k: 'Ctrl + XX', desc: '行首與原位置切換' },
+                ]},
+                { category: '文本編輯', keys: [
+                    { k: 'Ctrl + D', desc: '刪除光標所在字元' },
+                    { k: 'Ctrl + H', desc: '刪除光標前一字元' },
+                    { k: 'Alt + D', desc: '刪除至單字尾' },
+                    { k: 'Ctrl + W', desc: '刪除前一單字' },
+                    { k: 'Ctrl + K', desc: '刪除至行尾' },
+                    { k: 'Ctrl + U', desc: '刪除至行首' },
+                    { k: 'Ctrl + Y', desc: '貼上最近刪除內容' },
+                    { k: 'Alt + .', desc: '插入上一命令最後參數' },
+                    { k: 'Ctrl + T', desc: '交換前兩字元' },
+                ]},
+                { category: '命令歷史', keys: [
+                    { k: 'Ctrl + P', desc: '上一條命令' },
+                    { k: 'Ctrl + N', desc: '下一條命令' },
+                    { k: 'Ctrl + R', desc: '反向搜尋歷史' },
+                    { k: 'Alt + <', desc: '跳到最舊命令' },
+                    { k: 'Alt + >', desc: '跳到最新命令' },
+                    { k: '!!', desc: '執行上一條命令' },
+                    { k: '!n', desc: '執行第 n 條命令' },
+                    { k: '!string', desc: '執行最近以 string 開頭命令' },
+                ]},
+                { category: '進程控制', keys: [
+                    { k: 'Ctrl + C', desc: '中斷當前命令' },
+                    { k: 'Ctrl + Z', desc: '掛起進程到後台' },
+                    { k: 'Ctrl + L', desc: '清空終端畫面' },
+                    { k: 'Ctrl + S', desc: '暫停終端輸出' },
+                    { k: 'Ctrl + Q', desc: '恢復終端輸出' },
+                ]},
+                { category: '補全與輔助', keys: [
+                    { k: 'Tab', desc: '自動補全' },
+                    { k: 'Ctrl + I', desc: '等同 Tab' },
+                    { k: 'Alt + ?', desc: '顯示補全選項' },
+                    { k: 'Alt + /', desc: '補全最近使用檔案' },
+                ]},
+                { category: 'Vi 模式', keys: [
+                    { k: 'Esc', desc: '進入命令模式' },
+                    { k: 'h/l', desc: '左右移動' },
+                    { k: 'w/b', desc: '單字移動' },
+                    { k: '0/$', desc: '行首/行尾' },
+                    { k: 'x', desc: '刪除字元' },
+                    { k: 'dd', desc: '刪除整行' },
+                    { k: 'p', desc: '貼上' },
+                ]},
+            ],
+            vscode: [
+                { category: '通用功能', keys: [
+                    { k: 'Ctrl + Shift + P / F1', desc: '開啟命令面板' },
+                    { k: 'Ctrl + P', desc: '快速開啟檔案' },
+                    { k: 'Ctrl + Shift + N', desc: '開新視窗' },
+                    { k: 'Ctrl + Shift + W', desc: '關閉視窗' },
+                    { k: 'Ctrl + K Ctrl + S', desc: '開啟鍵位設定' },
+                ]},
+                { category: '編輯操作', keys: [
+                    { k: 'Ctrl + X / Ctrl + C', desc: '剪下/複製整行' },
+                    { k: 'Alt + ↑/↓', desc: '移動當前行' },
+                    { k: 'Shift + Alt + ↑/↓', desc: '複製當前行' },
+                    { k: 'Ctrl + Shift + K', desc: '刪除整行' },
+                    { k: 'Ctrl + Enter', desc: '下方插入新行' },
+                    { k: 'Ctrl + Shift + Enter', desc: '上方插入新行' },
+                    { k: 'Ctrl + /', desc: '切換行註解' },
+                    { k: 'Shift + Alt + A', desc: '切換塊註解' },
+                ]},
+                { category: '導航與搜尋', keys: [
+                    { k: 'Ctrl + T', desc: '搜尋 symbol' },
+                    { k: 'Ctrl + G', desc: '跳行號' },
+                    { k: 'Ctrl + Shift + T', desc: '重新開啟關閉檔案' },
+                    { k: 'Ctrl + Tab', desc: '切換檔案' },
+                    { k: 'Ctrl + F', desc: '搜尋本檔' },
+                    { k: 'Ctrl + D', desc: '選取下一個符合字串' },
+                    { k: 'Ctrl + Shift + L', desc: '選取所有符合字串' },
+                    { k: 'Alt + Click', desc: '多游標編輯' },
+                ]},
+                { category: '智能編輯', keys: [
+                    { k: 'Ctrl + Space', desc: '觸發建議' },
+                    { k: 'Ctrl + .', desc: '快速修正/動作' },
+                    { k: 'F12', desc: '跳轉到定義' },
+                    { k: 'Alt + F12', desc: 'Peek 定義' },
+                    { k: 'F2', desc: '重命名 symbol' },
+                    { k: 'Shift + Alt + F', desc: '自動格式化' },
+                ]},
+                { category: '調試', keys: [
+                    { k: 'F9', desc: '切換斷點' },
+                    { k: 'F5', desc: '開始/繼續執行' },
+                    { k: 'Shift + F5', desc: '停止除錯' },
+                    { k: 'F10', desc: 'Step Over' },
+                    { k: 'F11', desc: 'Step Into' },
+                    { k: 'Shift + F11', desc: 'Step Out' },
+                ]},
+                { category: '終端機', keys: [
+                    { k: 'Ctrl + `', desc: '切換/開啟終端機' },
+                    { k: 'Ctrl + Shift + `', desc: '新終端機視窗' },
+                    { k: 'Ctrl + C/V', desc: '終端複製/貼上' },
+                    { k: 'Ctrl + Shift + U', desc: '切換輸出面板' },
+                ]},
+                { category: 'Cursor AI/VS Code AI', keys: [
+                    { k: 'Cmd/Ctrl + L', desc: '打開 AI 面板' },
+                    { k: 'Cmd/Ctrl + Shift + L', desc: '用選中程式碼打開 AI 面板' },
+                    { k: 'Cmd/Ctrl + K', desc: '內聯 AI 編輯' },
+                    { k: 'Cmd/Ctrl + I', desc: '打開 Composer' },
+                    { k: 'Cmd/Ctrl + Shift + I', desc: '全屏 Composer' },
+                    { k: 'Cmd/Ctrl + Enter', desc: 'AI 面板附加程式碼庫' },
+                    { k: 'Tab', desc: '接受 AI 補全' },
+                    { k: 'Esc', desc: '關閉內聯編輯' },
+                ]},
+            ],
+        };
             const googleCommands = [
                 { command: '/help', category: '核心互動', description: '顯示 CLI 內的幫助訊息，包括命令、快捷鍵和上下文輸入說明。', notes: '對於新使用者入門和快速參考至關重要。' },
                 { command: '/tools', category: '核心互動', description: '列出 Gemini CLI 可用的所有內建工具，如檔案操作、網頁搜尋等。', notes: 'CLI 在調用工具前會提示許可。版本 0.1.7 存在已知錯誤。' },
@@ -380,9 +656,68 @@
                 switchTab(btnZibri, btnGoogle, contentZibri, contentGoogle);
             });
             
-            // Initial render
+            // Hotkeys 動態渲染
+            function renderHotkeysContent() {
+                renderHotkeySection('hotkeys-windows', HOTKEYS_DB.windows);
+                renderHotkeySection('hotkeys-mac', HOTKEYS_DB.mac);
+                renderHotkeySection('hotkeys-linux', HOTKEYS_DB.linux);
+                renderHotkeySection('hotkeys-vscode', HOTKEYS_DB.vscode);
+            }
+            function renderHotkeySection(containerId, data) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                container.innerHTML = '';
+                data.forEach(group => {
+                    const section = document.createElement('div');
+                    section.className = 'mb-8';
+                    section.innerHTML = `<h3 class="text-2xl font-bold text-slate-900 mb-4">${group.category}</h3>`;
+                    const list = document.createElement('div');
+                    list.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
+                    group.keys.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = 'bg-slate-50 border border-slate-200 rounded-lg p-4 mb-2 shadow-sm flex items-center';
+                        card.innerHTML = `<span class="font-mono font-semibold text-sky-700 text-base md:text-lg mr-4 whitespace-nowrap">${item.k}</span><span class="text-slate-700">${item.desc}</span>`;
+                        list.appendChild(card);
+                    });
+                    section.appendChild(list);
+                    container.appendChild(section);
+                });
+            }
+
+            // 主分頁切換邏輯擴充
+            function switchMainTab(tabId) {
+                const mainTabs = { gemini: 'main-btn-gemini', claude: 'main-btn-claude', shell: 'main-btn-shell', hotkeys: 'main-btn-hotkeys' };
+                const mainContents = { gemini: 'content-gemini', claude: 'content-claude', shell: 'content-shell', hotkeys: 'content-hotkeys' };
+                Object.keys(mainTabs).forEach(key => {
+                    const btn = document.getElementById(mainTabs[key]);
+                    const content = document.getElementById(mainContents[key]);
+                    const isActive = key === tabId;
+                    btn.classList.toggle('active', isActive);
+                    btn.classList.toggle('inactive', !isActive);
+                    content.classList.toggle('hidden', !isActive);
+                });
+                Object.values(charts).forEach(chart => chart.resize && chart.resize());
+            }
+            // 鍵盤快捷鍵子分頁切換
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('#content-hotkeys .sub-tab').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const parent = document.getElementById('content-hotkeys');
+                        parent.querySelectorAll('.sub-tab').forEach(b => {
+                            b.classList.toggle('active', b === btn);
+                            b.classList.toggle('inactive', b !== btn);
+                        });
+                        parent.querySelectorAll('.hotkeys-content').forEach(content => {
+                            content.classList.toggle('hidden', content.id !== btn.dataset.target);
+                        });
+                    });
+                });
+            });
+
+            // 初始渲染
             createGoogleChart();
             createZibriChart();
+            renderHotkeysContent();
         });
     </script>
 </body>
