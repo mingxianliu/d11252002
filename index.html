@@ -12,22 +12,22 @@
         body {
             font-family: 'Noto Sans TC', sans-serif;
         }
-        
-        /* 深色模式樣式 */
+
+        /* 深色模式樣式 - 加強對比度 */
         .dark .bg-white {
             background-color: #1e293b;
         }
         .dark .text-slate-900 {
-            color: #f1f5f9;
+            color: #f8fafc;
         }
         .dark .text-slate-600 {
-            color: #cbd5e1;
-        }
-        .dark .text-slate-700 {
             color: #e2e8f0;
         }
-        .dark .text-slate-800 {
+        .dark .text-slate-700 {
             color: #f1f5f9;
+        }
+        .dark .text-slate-800 {
+            color: #f8fafc;
         }
         .dark .border-slate-200 {
             border-color: #475569;
@@ -47,24 +47,24 @@
         .dark .bg-slate-900 {
             background-color: #0f172a;
         }
-        
+
         /* 側邊欄樣式 */
         .sidebar {
             transition: transform 0.3s ease-in-out;
         }
-        
+
         .sidebar.collapsed {
             transform: translateX(-100%);
         }
-        
+
         .content-area {
             transition: margin-left 0.3s ease-in-out;
         }
-        
+
         .content-area.expanded {
             margin-left: 0;
         }
-        
+
         /* 響應式設計 */
         @media (max-width: 768px) {
             .sidebar {
@@ -76,12 +76,77 @@
                 margin-left: 0;
             }
         }
+
+        /* 加強導航項目的對比度 */
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            transform: translateX(4px);
+        }
+
+        /* 加強按鈕的對比度 */
+        .btn-primary {
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+
+        /* 加強輸入框的對比度 */
+        input:focus, textarea:focus, select:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* 加強代碼區塊的對比度 */
+        pre, code {
+            border: 2px solid;
+            border-radius: 8px;
+        }
+
+        /* 滾動條樣式 */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #f1f5f9;
+        }
+
+        .dark ::-webkit-scrollbar-track {
+            background-color: #334155;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #3b82f6;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #2563eb;
+        }
+
+        /* 選擇文字樣式 */
+        ::selection {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        /* 焦點指示器 */
+        *:focus {
+            outline: 3px solid #3b82f6;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
 
     <!-- 側邊欄 -->
-    <div id="sidebar" class="sidebar fixed left-0 top-0 h-full w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 shadow-lg z-40">
+            <div id="sidebar" class="sidebar fixed left-0 top-0 h-full w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 shadow-lg z-40">
         <div class="p-6">
             <!-- 標題區域 -->
             <div class="mb-8">
@@ -649,22 +714,10 @@
             iframe.src = `技術文章/${articleName}`;
             iframe.className = 'w-full h-screen border-0';
             
-            // 創建返回按鈕
-            const backButton = document.createElement('button');
-            backButton.className = 'fixed top-20 left-6 z-50 px-4 py-2 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 rounded-lg shadow-lg hover:bg-slate-700 dark:hover:bg-slate-300 transition-colors';
-            backButton.innerHTML = '← 返回';
-            backButton.onclick = () => {
-                // 移除返回按鈕
-                backButton.remove();
-                // 重新載入首頁
-                loadPage('home', document.querySelector('.nav-item'));
-            };
-            
             // 清空當前內容並載入文章
             const contentArea = document.getElementById('page-content');
             contentArea.innerHTML = '';
             contentArea.appendChild(iframe);
-            document.body.appendChild(backButton);
             
             // 更新頁面標題
             document.getElementById('page-title').textContent = '技術文章';
