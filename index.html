@@ -564,9 +564,63 @@
                 generateArticlesSubmenu(articles);
             } catch (error) {
                 console.error('掃描技術文章資料夾失敗:', error);
-                // 如果 API 不可用，使用預設項目
-                generateArticlesSubmenu(['React-Hooks-最佳實踐.html', 'Docker-容器化部署指南.html']);
+                // 動態掃描技術文章資料夾
+                const articles = await scanArticlesDirectory();
+                generateArticlesSubmenu(articles);
             }
+        }
+
+        // 動態掃描技術文章資料夾
+        async function scanArticlesDirectory() {
+            const articles = [];
+            
+            // 嘗試檢查常見的技術文章檔案
+            const commonArticles = [
+                'React-Hooks-最佳實踐.html',
+                'Docker-容器化部署指南.html'
+            ];
+            
+            // 也嘗試檢查一些可能的檔案名稱模式
+            const possibleArticles = [
+                'Vue.js-組件開發指南.html',
+                'TypeScript-進階技巧.html',
+                'Node.js-後端開發實戰.html',
+                'Python-機器學習入門.html',
+                'JavaScript-ES6新特性.html',
+                'Git-版本控制最佳實踐.html',
+                'Linux-系統管理指南.html',
+                'AWS-雲端服務部署.html',
+                'Kubernetes-容器編排指南.html',
+                'Docker-Compose-多容器應用.html',
+                'React-Native-跨平台開發.html',
+                'Next.js-全端框架實戰.html',
+                'GraphQL-API設計指南.html',
+                'MongoDB-資料庫操作.html',
+                'Redis-快取系統應用.html'
+            ];
+            
+            // 合併所有可能的文章列表
+            const allPossibleArticles = [...commonArticles, ...possibleArticles];
+            
+            for (const article of allPossibleArticles) {
+                try {
+                    // 嘗試載入技術文章檔案
+                    const response = await fetch(`技術文章/${article}`, { method: 'HEAD' });
+                    if (response.ok) {
+                        articles.push(article);
+                    }
+                } catch (error) {
+                    // 如果檔案不存在，跳過
+                    console.log(`技術文章 ${article} 不存在或無法訪問`);
+                }
+            }
+            
+            // 如果沒有找到任何文章，使用預設項目
+            if (articles.length === 0) {
+                articles.push('React-Hooks-最佳實踐.html', 'Docker-容器化部署指南.html');
+            }
+            
+            return articles;
         }
 
         // 生成技術文章子選單
@@ -628,9 +682,60 @@
                 generateProjectSubmenu(projects);
             } catch (error) {
                 console.error('掃描專案資料夾失敗:', error);
-                // 如果 API 不可用，使用預設項目
-                generateProjectSubmenu(['智慧校園']);
+                // 動態掃描專案作品資料夾
+                const projects = await scanProjectsDirectory();
+                generateProjectSubmenu(projects);
             }
+        }
+
+        // 動態掃描專案作品資料夾
+        async function scanProjectsDirectory() {
+            const projects = [];
+            
+            // 嘗試檢查常見的專案資料夾
+            const commonProjects = ['智慧校園', '智慧工地'];
+            
+            // 也嘗試檢查一些可能的專案資料夾
+            const possibleProjects = [
+                '智慧建築',
+                'AI系統',
+                '區塊鏈應用',
+                '物聯網平台',
+                '機器學習專案',
+                '數據分析平台',
+                '雲端服務應用',
+                '移動應用開發',
+                'Web應用系統',
+                'API服務平台',
+                '微服務架構',
+                'DevOps工具鏈',
+                '監控系統',
+                '自動化測試',
+                'CI/CD管道'
+            ];
+            
+            // 合併所有可能的專案列表
+            const allPossibleProjects = [...commonProjects, ...possibleProjects];
+            
+            for (const project of allPossibleProjects) {
+                try {
+                    // 嘗試載入專案的index.html檔案
+                    const response = await fetch(`專案作品/${project}/index.html`, { method: 'HEAD' });
+                    if (response.ok) {
+                        projects.push(project);
+                    }
+                } catch (error) {
+                    // 如果檔案不存在，跳過
+                    console.log(`專案 ${project} 不存在或無法訪問`);
+                }
+            }
+            
+            // 如果沒有找到任何專案，使用預設項目
+            if (projects.length === 0) {
+                projects.push('智慧校園', '智慧工地');
+            }
+            
+            return projects;
         }
 
         // 生成專案子選單

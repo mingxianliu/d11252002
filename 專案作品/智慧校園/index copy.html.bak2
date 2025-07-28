@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>明新科大智慧校園協作平台</title>
+    <title>智慧校園協作平台</title>
     <style>
         body {
             font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif;
@@ -22,7 +22,7 @@
             background: white;
             border-radius: 24px;
             box-shadow: 0 25px 80px rgba(0,0,0,0.1);
-            overflow: visible;
+            overflow: hidden;
         }
 
         .header {
@@ -47,15 +47,15 @@
         .tabs-container {
             background: #f8f9fa;
             border-bottom: 1px solid #dee2e6;
-            position: relative;
-            z-index: 100;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .tabs {
             display: flex;
-            overflow: visible;
+            overflow-x: auto;
             padding: 0 20px;
-            position: relative;
         }
 
         .tab {
@@ -82,94 +82,6 @@
             border-bottom-color: #F58220; /* MUST Orange */
             background: white;
         }
-
-        /* 下拉式選單群組樣式 */
-        .tab-group {
-            position: relative;
-            display: inline-block;
-            overflow: visible;
-        }
-
-        .tab-group-header {
-            flex: 0 0 auto;
-            padding: 22px 32px;
-            cursor: pointer;
-            background: transparent;
-            border: none;
-            border-bottom: 4px solid transparent;
-            font-size: 18px;
-            font-weight: 600;
-            color: #495057;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            position: relative;
-        }
-
-        .tab-group-header:hover {
-            color: #F58220;
-            background: #fdf6f0;
-        }
-
-        .tab-group-header.active {
-            color: #F58220;
-            border-bottom-color: #F58220;
-            background: #fdf6f0;
-        }
-
-        .tab-dropdown {
-            visibility: hidden;
-            opacity: 0;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            min-width: 250px;
-            background: white;
-            border: 2px solid #F58220;
-            border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(245, 130, 32, 0.4);
-            z-index: 9999;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            margin-top: 5px;
-        }
-
-        .tab-dropdown.show {
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .dropdown-tab {
-            display: block;
-            width: 100%;
-            padding: 15px 20px;
-            border: none;
-            background: white;
-            color: #495057;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .dropdown-tab:last-child {
-            border-bottom: none;
-        }
-
-        .dropdown-tab:hover {
-            background: #fdf6f0;
-            color: #F58220;
-            padding-left: 25px;
-        }
-
-        .dropdown-tab.active {
-            background: #F58220;
-            color: white;
-            font-weight: 600;
-        }
-
 
         .tab-content {
             display: none;
@@ -672,129 +584,48 @@
         @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
         @keyframes slideIn { from {transform: translateY(-50px);} to {transform: translateY(0);} }
 
-        /* Enhanced Roadmap Styles */
-        .roadmap-container {
-            position: relative;
-            margin: 30px 0;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-        }
-
-        .roadmap-timeline {
-            position: absolute;
-            top: 80px;
-            left: 220px;
-            right: 30px;
-            height: 6px;
-            background: linear-gradient(90deg, #003366, #F58220);
-            border-radius: 3px;
-            z-index: 1;
-        }
-
-        .timeline-milestone {
-            position: absolute;
-            top: -8px;
-            width: 22px;
-            height: 22px;
-            background: #F58220;
-            border: 4px solid white;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(245, 130, 32, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-milestone:hover {
-            transform: scale(1.2);
-            box-shadow: 0 6px 20px rgba(245, 130, 32, 0.5);
-        }
-
-        .milestone-1 { left: 20%; }
-        .milestone-2 { left: 40%; }
-        .milestone-3 { left: 60%; }
-        .milestone-4 { left: 80%; }
-
+        /* Roadmap Styles */
         .roadmap-grid {
             display: grid;
-            grid-template-columns: 180px repeat(5, 1fr);
-            gap: 3px;
-            background-color: transparent;
-            border: 3px solid #003366;
-            border-radius: 16px;
+            grid-template-columns: 180px repeat(5, 1fr); /* Adjusted for 5 phases */
+            gap: 1px;
+            background-color: #e0e0e0;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             overflow: hidden;
-            margin-top: 40px;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-            position: relative;
-            z-index: 2;
+            margin-top: 30px;
         }
 
         .roadmap-header {
-            background: linear-gradient(135deg, #003366, #004d7a);
+            background-color: #003366;
             color: white;
-            font-weight: 700;
-            padding: 18px 12px;
+            font-weight: bold;
+            padding: 15px 10px;
             text-align: center;
             font-size: 15px;
-            position: relative;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
-        }
-
-        .roadmap-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #F58220, #ff9933);
         }
 
         .roadmap-label {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            font-weight: 700;
-            padding: 18px 12px;
+            background-color: #f0f2f5;
+            font-weight: bold;
+            padding: 15px 10px;
             text-align: left;
             font-size: 14px;
             color: #003366;
             display: flex;
             align-items: center;
-            position: relative;
-            box-shadow: inset 2px 0 4px rgba(0,51,102,0.1);
-        }
-
-        .roadmap-label::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: #F58220;
         }
 
         .roadmap-cell {
             background-color: #ffffff;
-            padding: 15px 12px;
+            padding: 10px;
             text-align: center;
             font-size: 13px;
             border-left: 1px solid #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 60px;
-            position: relative;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border-radius: 8px;
-            margin: 2px;
-        }
-
-        .roadmap-cell:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            z-index: 10;
+            min-height: 40px; /* Ensure consistent height */
         }
 
         .roadmap-cell.phase-bar {
@@ -808,358 +639,12 @@
             height: 30px;
         }
 
-        /* Enhanced service type colors with gradients and professional indicators */
-        .roadmap-cell.core-service { 
-            background: linear-gradient(135deg, #f39800, #ff9933);
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(243, 152, 0, 0.3);
-        }
-        .roadmap-cell.teaching-service { 
-            background: linear-gradient(135deg, #68a063, #7cb978);
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(104, 160, 99, 0.3);
-        }
-        .roadmap-cell.data-service { 
-            background: linear-gradient(135deg, #306998, #4a7bb7);
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(48, 105, 152, 0.3);
-        }
-        .roadmap-cell.output-module { 
-            background: linear-gradient(135deg, #F58220, #ff9538);
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(245, 130, 32, 0.3);
-        }
-        .roadmap-cell.consulting-phase { 
-            background: linear-gradient(135deg, #808080, #999999);
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(128, 128, 128, 0.3);
-        }
-
-        /* Professional indicators */
-        .roadmap-cell::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.7);
-        }
-
-        .roadmap-cell.high-complexity::after {
-            content: '★★★';
-            position: absolute;
-            bottom: 4px;
-            right: 6px;
-            font-size: 10px;
-            color: #ffd700;
-        }
-
-        .roadmap-cell.medium-complexity::after {
-            content: '★★';
-            position: absolute;
-            bottom: 4px;
-            right: 6px;
-            font-size: 10px;
-            color: #ffd700;
-        }
-
-        .roadmap-cell.low-complexity::after {
-            content: '★';
-            position: absolute;
-            bottom: 4px;
-            right: 6px;
-            font-size: 10px;
-            color: #ffd700;
-        }
-
-        /* 依賴關係線條 */
-        .dependency-line {
-            position: absolute;
-            border-top: 2px dashed #F58220;
-            z-index: 5;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .roadmap-cell:hover .dependency-line,
-        .roadmap-cell.show-dependencies .dependency-line {
-            opacity: 1;
-        }
-
-        /* 多維度檢視控制 */
-        .roadmap-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .view-toggle {
-            background: #003366;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .view-toggle:hover {
-            background: #F58220;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 130, 32, 0.3);
-        }
-
-        .view-toggle.active {
-            background: #F58220;
-            box-shadow: 0 4px 12px rgba(245, 130, 32, 0.3);
-        }
-
-        .controls-hint {
-            width: 100%;
-            text-align: center;
-            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-            color: #003366;
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            border: 2px solid #F58220;
-            animation: subtlePulse 3s ease-in-out infinite;
-        }
-
-        @keyframes subtlePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        /* ROI 指標顯示 */
-        .roi-indicator {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .roadmap-cell:hover .roi-indicator {
-            opacity: 1;
-        }
-
-        /* 風險等級顯示 */
-        .risk-indicator {
-            position: absolute;
-            bottom: 4px;
-            left: 4px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            opacity: 0.8;
-        }
-
-        .risk-indicator.low { background: #28a745; }
-        .risk-indicator.medium { background: #ffc107; }
-        .risk-indicator.high { background: #dc3545; }
-
-        /* 成熟度指標 */
-        .maturity-level {
-            position: absolute;
-            top: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #003366;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 9px;
-            font-weight: 600;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .roadmap-cell:hover .maturity-level {
-            opacity: 1;
-            top: -10px;
-        }
-
-        /* 里程碑產出列表樣式 */
-        .milestone-deliverables {
-            margin-top: 50px;
-            padding: 40px;
-            background: linear-gradient(135deg, #f8f9fa, #ffffff);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .deliverables-title {
-            text-align: center;
-            font-size: 28px;
-            font-weight: 700;
-            color: #003366;
-            margin-bottom: 40px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #F58220;
-        }
-
-        .phase-deliverables {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .phase-block {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            border-left: 5px solid #F58220;
-        }
-
-        .phase-block:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-
-        .phase-block.consulting-phase {
-            border-left-color: #808080;
-        }
-
-        .phase-block.phase-1 {
-            border-left-color: #f39800;
-        }
-
-        .phase-block.phase-2 {
-            border-left-color: #68a063;
-        }
-
-        .phase-block.phase-3 {
-            border-left-color: #306998;
-        }
-
-        .phase-block.phase-4 {
-            border-left-color: #F58220;
-        }
-
-        .phase-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e9ecef;
-        }
-
-        .phase-icon {
-            font-size: 24px;
-            margin-right: 10px;
-        }
-
-        .phase-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: #003366;
-            flex: 1;
-        }
-
-        .phase-status {
-            background: #F58220;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .deliverable-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .deliverable-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .deliverable-item:hover {
-            background: #e3f2fd;
-            transform: translateX(5px);
-        }
-
-        .deliverable-icon {
-            margin-right: 12px;
-            font-size: 16px;
-            color: #28a745;
-            font-weight: bold;
-        }
-
-        .consulting-phase .deliverable-icon {
-            color: #808080;
-        }
-
-        .phase-1 .deliverable-icon {
-            color: #f39800;
-        }
-
-        .phase-2 .deliverable-icon {
-            color: #68a063;
-        }
-
-        .phase-3 .deliverable-icon {
-            color: #306998;
-        }
-
-        .phase-4 .deliverable-icon {
-            color: #F58220;
-        }
-
-        /* 產學合作標籤樣式 */
-        .collaboration-tag {
-            background: linear-gradient(135deg, #F58220, #ff9538);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-left: 8px;
-            display: inline-block;
-            box-shadow: 0 2px 6px rgba(245, 130, 32, 0.3);
-        }
-
-        .collaboration-tag.core {
-            background: linear-gradient(135deg, #dc3545, #e74c3c);
-            animation: coreProductPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes coreProductPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+        /* Specific colors for different service types */
+        .roadmap-cell.core-service { background-color: #f39800; } /* Orange */
+        .roadmap-cell.teaching-service { background-color: #68a063; } /* Green */
+        .roadmap-cell.data-service { background-color: #306998; } /* Blue */
+        .roadmap-cell.output-module { background-color: #F58220; } /* MUST Orange */
+        .roadmap-cell.consulting-phase { background-color: #808080; } /* Grey for consulting */
 
         /* Alternating row color for better readability */
         .roadmap-grid > div:nth-child(odd):not(.roadmap-header):not(.roadmap-label) { background-color: #f9f9f9; }
@@ -1180,43 +665,22 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>明新科大智慧校園協作平台</h1>
-            <p>漸進式混合微服務協作架構 | 產學孵化器導向設計 | 15個整合型服務</p>
+            <h1>智慧校園協作平台</h1>
+            <p>漸進式混合微服務架構 | 業務能力導向設計 | 15個整合型服務</p>
         </div>
 
         <div class="tabs-container">
             <div class="tabs">
-                <!-- 主要概覽 -->
+                <button class="tab" onclick="showTab('vision')">🚀 願景與共創模式</button>
                 <button class="tab active" onclick="showTab('roadmap')">🗺️ 協作平台總覽</button>
-                <button class="tab" onclick="showTab('vision')">🚀 願景與共創</button>
-                
-                <!-- 服務層級 -->
-                <div class="tab-group">
-                    <button class="tab-group-header" onclick="toggleDropdown('services-dropdown')">
-                        📋 服務層級 ▼
-                    </button>
-                    <div class="tab-dropdown" id="services-dropdown">
-                        <button class="tab dropdown-tab" onclick="showTab('core-services')">🔧 核心管理服務</button>
-                        <button class="tab dropdown-tab" onclick="showTab('business-services')">📚 教學業務服務</button>
-                        <button class="tab dropdown-tab" onclick="showTab('analytics-services')">📈 數據分析服務</button>
-                    </div>
-                </div>
-                
-                <!-- 技術總覽 - 獨立項目 -->
-                <button class="tab" onclick="showTab('overview')">📊 技術總覽</button>
-                
-                <!-- 技術架構 -->
-                <div class="tab-group">
-                    <button class="tab-group-header" onclick="toggleDropdown('tech-dropdown')">
-                        🏗️ 技術架構 ▼
-                    </button>
-                    <div class="tab-dropdown" id="tech-dropdown">
-                        <button class="tab dropdown-tab" onclick="showTab('infrastructure')">🏗️ 基礎設施層</button>
-                        <button class="tab dropdown-tab" onclick="showTab('data-layer')">🗄️ 數據層</button>
-                        <button class="tab dropdown-tab" onclick="showTab('presentation')">🎨 展示層</button>
-                    </div>
-                </div>
-                
+                <button class="tab" onclick="showTab('overview')">📊 原始技術總覽</button>
+                <button class="tab" onclick="showTab('budget')">💰 預算評估</button>
+                <button class="tab" onclick="showTab('core-services')">🔧 核心管理服務</button>
+                <button class="tab" onclick="showTab('business-services')">📚 教學業務服務</button>
+                <button class="tab" onclick="showTab('analytics-services')">📈 數據分析服務</button>
+                <button class="tab" onclick="showTab('infrastructure')">🏗️ 基礎設施層</button>
+                <button class="tab" onclick="showTab('data-layer')">🗄️ 數據層</button>
+                <button class="tab" onclick="showTab('presentation')">🎨 展示層</button>
             </div>
         </div>
 
@@ -1299,50 +763,12 @@
 
         <!-- 協作平台總覽 -->
         <div id="roadmap" class="tab-content active">
-            <!-- 系統架構圖區塊 -->
-            <div class="architecture-layer">
-                <div class="layer-title"><span class="layer-icon">🏗️</span>智慧校園系統架構圖</div>
-                <p style="text-align: center; max-width: 900px; margin: 0 auto 30px auto; font-size: 16px; color: #555;">
-                    本架構圖展示了明新科大智慧校園協作平台的完整系統架構，採用分層設計理念，從使用者層到基礎設施層，建構完整的數位校園生態系統。
-                </p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <img src="123.png" 
-                         alt="智慧校園系統架構圖" 
-                         style="max-width: 100%; height: auto; border: 2px solid #F58220; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" />
-                </div>
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-top: 20px;">
-                    <h4 style="color: #003366; margin-bottom: 15px;">🎯 架構說明</h4>
-                    <ul style="color: #555; line-height: 1.8;">
-                        <li><strong>表示層 (Presentation Layer)</strong>：提供統一的使用者介面，支援桌面端與行動裝置</li>
-                        <li><strong>教學業務服務層 (Business Services)</strong>：核心教學與校務管理功能模組</li>
-                        <li><strong>核心管理服務層 (Core Services)</strong>：身份認證、權限管理、系統整合等基礎服務</li>
-                        <li><strong>數據分析服務層 (Analytics Services)</strong>：智慧分析、預測推薦與商業智慧</li>
-                        <li><strong>數據與基礎設施層 (Data & Infrastructure)</strong>：資料儲存與系統基礎架構支援</li>
-                    </ul>
-                </div>
-            </div>
-            
             <div class="architecture-layer">
                 <div class="layer-title"><span class="layer-icon">🗺️</span>協作平台開發路徑圖 (Roadmap)</div>
                 <p style="text-align: center; max-width: 900px; margin: 0 auto 30px auto; font-size: 16px; color: #555;">
                     本路徑圖清晰展示了智慧校園協作平台的分階段開發規劃，每個階段都將交付具體的服務模組，逐步構建完整的平台生態。
                 </p>
-                <div class="roadmap-controls">
-                    <div class="controls-hint">💡 點選按鈕切換不同視圖模式，點選時間軸⭕查看各階段服務</div>
-                    <button class="view-toggle active" data-view="default">🗺️ 預設視圖</button>
-                    <button class="view-toggle" data-view="roi">💰 ROI 視圖</button>
-                    <button class="view-toggle" data-view="risk">⚠️ 風險視圖</button>
-                    <button class="view-toggle" data-view="complexity">⚙️ 複雜度視圖</button>
-                    <button class="view-toggle" data-view="dependencies">🔗 依賴關係</button>
-                </div>
-                <div class="roadmap-container">
-                    <div class="roadmap-timeline">
-                        <div class="timeline-milestone milestone-1" title="第一階段完成"></div>
-                        <div class="timeline-milestone milestone-2" title="第二階段完成"></div>
-                        <div class="timeline-milestone milestone-3" title="第三階段完成"></div>
-                        <div class="timeline-milestone milestone-4" title="第四階段完成"></div>
-                    </div>
-                    <div class="roadmap-grid">
+                <div class="roadmap-grid">
                     <div class="roadmap-header">服務類別</div>
                     <div class="roadmap-header">顧問階段 (1-3個月)</div>
                     <div class="roadmap-header">第一階段 (4-12個月)</div>
@@ -1352,207 +778,44 @@
 
                     <div class="roadmap-label">核心管理服務</div>
                     <div class="roadmap-cell consulting-phase">需求訪談與分析</div>
-                    <div class="roadmap-cell core-service high-complexity" data-roi="85%" data-risk="中" title="複雜度: ★★★ | ROI: 85% | 風險: 中">
-                        <span class="roi-indicator">ROI: 85%</span>
-                        <span class="risk-indicator medium"></span>
-                        <span class="maturity-level">Level 1</span>
-                        身份與權限管理
-                    </div>
-                    <div class="roadmap-cell core-service high-complexity" data-roi="90%" data-risk="高" title="複雜度: ★★★ | ROI: 90% | 風險: 高">
-                        <span class="roi-indicator">ROI: 90%</span>
-                        <span class="risk-indicator high"></span>
-                        <span class="maturity-level">Level 2</span>
-                        系統整合與平台
-                    </div>
-                    <div class="roadmap-cell core-service medium-complexity" data-roi="75%" data-risk="中" title="複雜度: ★★ | ROI: 75% | 風險: 中">
-                        <span class="roi-indicator">ROI: 75%</span>
-                        <span class="risk-indicator medium"></span>
-                        <span class="maturity-level">Level 2</span>
-                        財務與採購管理
-                    </div>
-                    <div class="roadmap-cell core-service medium-complexity" data-roi="80%" data-risk="低" title="複雜度: ★★ | ROI: 80% | 風險: 低">校務治理與策略</div>
-                    <div class="roadmap-cell core-service low-complexity" data-roi="70%" data-risk="低" title="複雜度: ★ | ROI: 70% | 風險: 低">審計與合規服務</div>
+                    <div class="roadmap-cell core-service">身份與權限管理</div>
+                    <div class="roadmap-cell core-service">系統整合與平台</div>
+                    <div class="roadmap-cell core-service">財務與採購管理</div>
+                    <div class="roadmap-cell core-service">校務治理與策略</div>
+                    <div class="roadmap-cell core-service">審計與合規服務</div>
 
                     <div class="roadmap-label">教學業務服務</div>
                     <div class="roadmap-cell"></div>
-                    <div class="roadmap-cell teaching-service high-complexity" data-roi="95%" data-risk="中" title="複雜度: ★★★ | ROI: 95% | 風險: 中">學生生命週期管理</div>
-                    <div class="roadmap-cell teaching-service high-complexity" data-roi="90%" data-risk="中" title="複雜度: ★★★ | ROI: 90% | 風險: 中">課程與教學管理</div>
-                    <div class="roadmap-cell teaching-service medium-complexity" data-roi="85%" data-risk="低" title="複雜度: ★★ | ROI: 85% | 風險: 低">學生事務與校園生活</div>
-                    <div class="roadmap-cell teaching-service medium-complexity" data-roi="80%" data-risk="中" title="複雜度: ★★ | ROI: 80% | 風險: 中">人力資源管理</div>
-                    <div class="roadmap-cell teaching-service medium-complexity" data-roi="75%" data-risk="低" title="複雜度: ★★ | ROI: 75% | 風險: 低">校園資源與設施</div>
-                    <div class="roadmap-cell teaching-service low-complexity" data-roi="65%" data-risk="低" title="複雜度: ★ | ROI: 65% | 風險: 低">對外關係與品牌</div>
-                    <div class="roadmap-cell teaching-service medium-complexity" data-roi="88%" data-risk="中" title="複雜度: ★★ | ROI: 88% | 風險: 中">通訊與協作平台</div>
+                    <div class="roadmap-cell teaching-service">學生生命週期管理</div>
+                    <div class="roadmap-cell teaching-service">課程與教學管理</div>
+                    <div class="roadmap-cell teaching-service">學生事務與校園生活</div>
+                    <div class="roadmap-cell teaching-service">人力資源管理</div>
+                    <div class="roadmap-cell teaching-service">校園資源與設施</div>
+                    <div class="roadmap-cell teaching-service">對外關係與品牌</div>
+                    <div class="roadmap-cell teaching-service">通訊與協作平台</div>
 
                     <div class="roadmap-label">數據分析服務</div>
                     <div class="roadmap-cell"></div>
                     <div class="roadmap-cell"></div>
-                    <div class="roadmap-cell data-service high-complexity" data-roi="120%" data-risk="高" title="複雜度: ★★★ | ROI: 120% | 風險: 高">數據分析與商業智慧</div>
-                    <div class="roadmap-cell data-service medium-complexity" data-roi="95%" data-risk="中" title="複雜度: ★★ | ROI: 95% | 風險: 中">研究與產學合作</div>
-                    <div class="roadmap-cell data-service high-complexity" data-roi="110%" data-risk="高" title="複雜度: ★★★ | ROI: 110% | 風險: 高">智慧推薦與預測</div>
+                    <div class="roadmap-cell data-service">數據分析與商業智慧</div>
+                    <div class="roadmap-cell data-service">研究與產學合作</div>
+                    <div class="roadmap-cell data-service">智慧推薦與預測</div>
 
-                    </div>
-                    
-                    <!-- 里程碑產出列表 -->
-                    <div class="milestone-deliverables">
-                        <h3 class="deliverables-title">🏆 各階段核心產出與交付物</h3>
-                        
-                        <div class="phase-deliverables">
-                            <div class="phase-block consulting-phase">
-                                <div class="phase-header">
-                                    <span class="phase-icon">📝</span>
-                                    <span class="phase-name">顧問階段 (1-3個月)</span>
-                                    <span class="phase-status">基礎建設</span>
-                                </div>
-                                <div class="deliverable-list">
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">✓</span>
-                                        校務系統現狀分析報告
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">✓</span>
-                                        數位轉型需求評估
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">✓</span>
-                                        技術架構設計建議書
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">✓</span>
-                                        專案執行計畫書
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="phase-block phase-1">
-                                <div class="phase-header">
-                                    <span class="phase-icon">🚀</span>
-                                    <span class="phase-name">第一階段 (4-12個月)</span>
-                                    <span class="phase-status">核心建置</span>
-                                </div>
-                                <div class="deliverable-list">
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">🔐</span>
-                                        SSO 單一登入系統 <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">🛠️</span>
-                                        系統整合平台 (API Gateway) <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">🎯</span>
-                                        學生入學至畢業管理系統 <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">📊</span>
-                                        基礎數據倉儲與清理
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">📱</span>
-                                        手機APP (iOS/Android)
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="phase-block phase-2">
-                                <div class="phase-header">
-                                    <span class="phase-icon">🎆</span>
-                                    <span class="phase-name">第二階段 (13-24個月)</span>
-                                    <span class="phase-status">業務整合</span>
-                                </div>
-                                <div class="deliverable-list">
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">💼</span>
-                                        財務管理模組 (ERP 整合) <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">🏢</span>
-                                        校務治理儀表板
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">📚</span>
-                                        課程排程與教學管理 <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">🎓</span>
-                                        學務管理完整系統 <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">🛡️</span>
-                                        資訊安全監控中心
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="phase-block phase-3">
-                                <div class="phase-header">
-                                    <span class="phase-icon">🤖</span>
-                                    <span class="phase-name">第三階段 (25-36個月)</span>
-                                    <span class="phase-status">智慧化</span>
-                                </div>
-                                <div class="deliverable-list">
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">📈</span>
-                                        商業智慧 (BI) 平台 <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">🔬</span>
-                                        研究與產學合作平台 <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">🎯</span>
-                                        AI 智慧推薦系統 <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">📊</span>
-                                        預測分析模型 <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">🌍</span>
-                                        永續發展追蹤系統
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="phase-block phase-4">
-                                <div class="phase-header">
-                                    <span class="phase-icon">🌟</span>
-                                    <span class="phase-name">第四階段 (37-48個月)</span>
-                                    <span class="phase-status">產學輸出</span>
-                                </div>
-                                <div class="deliverable-list">
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">📦</span>
-                                        可攜式模組包 (Docker 化) <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">🏷️</span>
-                                        白牌即服務解決方案 <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">⚙️</span>
-                                        一鍵部署腳本工具 <span class="collaboration-tag">🏢 產學孵化器</span>
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">📈</span>
-                                        產學合作效益儀表板
-                                    </div>
-                                    <div class="deliverable-item">
-                                        <span class="deliverable-icon">💼</span>
-                                        商業授權模式建立
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="roadmap-label">產學合作模組 (輸出)</div>
+                    <div class="roadmap-cell"></div>
+                    <div class="roadmap-cell output-module">可攜式模組架構</div>
+                    <div class="roadmap-cell output-module">白牌即服務能力</div>
+                    <div class="roadmap-cell output-module">一鍵部署腳本</div>
+                    <div class="roadmap-cell output-module">產學合作儀表板</div>
                 </div>
             </div>
         </div>
         <!-- 架構總覽 -->
         <div id="overview" class="tab-content">
             <div class="overview-section">
-                <div class="overview-title">🎯 技術總覽</div>
+                <div class="overview-title">🎯 原始技術總覽</div>
                 <p style="color: #b86014; line-height: 1.7; font-size: 16px;">
-                    採用<b>產學孵化器導向</b>的漸進式混合微服務架構，將原本複雜的60個微服務整合為15個具有完整業務閉環能力的服務，大幅降低系統複雜度並提升維護效率。
+                    採用<b>業務能力導向</b>的漸進式混合微服務架構，將原本複雜的60個微服務整合為15個具有完整業務閉環能力的服務，大幅降低系統複雜度並提升維護效率。
                 </p>
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -1653,7 +916,7 @@
         </div>
 
         <!-- 預算評估 -->
-        <div id="budget" class="tab-content" style="display: none !important;">
+        <div id="budget" class="tab-content">
             <div class="architecture-layer">
                 <div class="layer-title"><span class="layer-icon">💰</span>預算評估總表</div>
                 <table class="budget-table">
@@ -3378,67 +2641,12 @@
             });
             document.getElementById(tabName).classList.add('active');
 
-            // 更新所有tab的active狀態
-            const tabs = document.querySelectorAll('.tab, .dropdown-tab, .tab-group-header');
+            const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => {
                 tab.classList.remove('active');
             });
-            
-            // 找到被點擊的tab並設為active
-            const clickedTab = document.querySelector(`.tab[onclick="showTab('${tabName}')"], .dropdown-tab[onclick="showTab('${tabName}')"]`);
-            if (clickedTab) {
-                clickedTab.classList.add('active');
-                
-                // 如果是下拉選單中的項目，也要高亮群組標題
-                if (clickedTab.classList.contains('dropdown-tab')) {
-                    const tabGroup = clickedTab.closest('.tab-group');
-                    const groupHeader = tabGroup.querySelector('.tab-group-header');
-                    groupHeader.classList.add('active');
-                }
-            }
-            
-            // 關閉所有下拉選單
-            closeAllDropdowns();
+            document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
         }
-
-        // 下拉選單功能
-        function toggleDropdown(dropdownId) {
-            console.log('切換下拉選單:', dropdownId);
-            
-            const dropdown = document.getElementById(dropdownId);
-            if (!dropdown) {
-                console.error('找不到下拉選單:', dropdownId);
-                return;
-            }
-            
-            const isCurrentlyShown = dropdown.classList.contains('show');
-            console.log('當前狀態:', isCurrentlyShown ? '顯示' : '隱藏');
-            
-            // 關閉所有下拉選單
-            closeAllDropdowns();
-            
-            // 如果當前選單不是顯示狀態，則顯示它
-            if (!isCurrentlyShown) {
-                dropdown.classList.add('show');
-                console.log('已顯示下拉選單');
-            }
-        }
-
-        function closeAllDropdowns() {
-            console.log('關閉所有下拉選單');
-            const dropdowns = document.querySelectorAll('.tab-dropdown');
-            dropdowns.forEach(dropdown => {
-                dropdown.classList.remove('show');
-            });
-        }
-
-        // 點擊頁面其他地方時關閉下拉選單
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.tab-group')) {
-                closeAllDropdowns();
-            }
-        });
-
 
         function openModal(modalId) {
             document.getElementById(modalId).style.display = "block";
@@ -4490,7 +3698,7 @@
             }
         }
 
-        // Enhanced Roadmap Interactive Features\n        document.addEventListener('DOMContentLoaded', function() {\n            // \u521d\u59cb\u5316 roadmap \u4e92\u52d5\u529f\u80fd\n            initRoadmapInteractivity();\n        });\n\n        function initRoadmapInteractivity() {\n            const viewToggles = document.querySelectorAll('.view-toggle');\n            const roadmapCells = document.querySelectorAll('.roadmap-cell');\n            const timelineMilestones = document.querySelectorAll('.timeline-milestone');\n\n            // \u8996\u5716\u5207\u63db\u529f\u80fd\n            viewToggles.forEach(toggle => {\n                toggle.addEventListener('click', function() {\n                    const viewType = this.dataset.view;\n                    \n                    // \u66f4\u65b0\u6309\u9215\u72c0\u614b\n                    viewToggles.forEach(t => t.classList.remove('active'));\n                    this.classList.add('active');\n                    \n                    // \u61c9\u7528\u8996\u5716\n                    applyViewFilter(viewType, roadmapCells);\n                });\n            });\n\n            // \u6642\u9593\u8ef8\u4e92\u52d5\n            timelineMilestones.forEach((milestone, index) => {\n                milestone.addEventListener('click', function() {\n                    highlightPhase(index + 1);\n                });\n\n                milestone.addEventListener('mouseenter', function() {\n                    showPhaseTooltip(this, index + 1);\n                });\n\n                milestone.addEventListener('mouseleave', function() {\n                    hidePhaseTooltip();\n                });\n            });\n\n            // Cell hover \u6548\u679c\n            roadmapCells.forEach(cell => {\n                cell.addEventListener('mouseenter', function() {\n                    this.style.transform = 'translateY(-4px) scale(1.02)';\n                    showDependencies(this);\n                });\n\n                cell.addEventListener('mouseleave', function() {\n                    this.style.transform = 'translateY(-2px) scale(1)';\n                    hideDependencies();\n                });\n            });\n        }\n\n        function applyViewFilter(viewType, cells) {\n            cells.forEach(cell => {\n                cell.classList.remove('highlight-roi', 'highlight-risk', 'highlight-complexity');\n                \n                switch(viewType) {\n                    case 'roi':\n                        const roi = parseInt(cell.dataset.roi);\n                        if (roi >= 100) cell.classList.add('highlight-roi');\n                        break;\n                    case 'risk':\n                        const risk = cell.dataset.risk;\n                        if (risk === '\u9ad8') cell.classList.add('highlight-risk');\n                        break;\n                    case 'complexity':\n                        if (cell.classList.contains('high-complexity')) {\n                            cell.classList.add('highlight-complexity');\n                        }\n                        break;\n                    case 'dependencies':\n                        showAllDependencies();\n                        break;\n                }\n            });\n        }\n\n        function highlightPhase(phaseNumber) {\n            const cells = document.querySelectorAll('.roadmap-cell');\n            cells.forEach((cell, index) => {\n                const column = (index % 6) + 1; // 6 columns in grid\n                if (column === phaseNumber + 1) { // +1 for label column\n                    cell.style.boxShadow = '0 0 20px #F58220';\n                    setTimeout(() => {\n                        cell.style.boxShadow = '';\n                    }, 2000);\n                }\n            });\n        }\n\n        function showPhaseTooltip(milestone, phase) {\n            const tooltip = document.createElement('div');\n            tooltip.className = 'phase-tooltip';\n            tooltip.innerHTML = `\n                <strong>\u7b2c${phase}\u968e\u6bb5</strong><br>\n                <small>\u9ede\u64ca\u67e5\u770b\u8a72\u968e\u6bb5\u6240\u6709\u670d\u52d9</small>\n            `;\n            tooltip.style.cssText = `\n                position: absolute;\n                background: #003366;\n                color: white;\n                padding: 8px 12px;\n                border-radius: 6px;\n                font-size: 12px;\n                z-index: 1000;\n                top: -50px;\n                left: 50%;\n                transform: translateX(-50%);\n                white-space: nowrap;\n                box-shadow: 0 4px 12px rgba(0,0,0,0.3);\n            `;\n            milestone.appendChild(tooltip);\n        }\n\n        function hidePhaseTooltip() {\n            const tooltips = document.querySelectorAll('.phase-tooltip');\n            tooltips.forEach(tooltip => tooltip.remove());\n        }\n\n        function showDependencies(cell) {\n            // \u6a21\u64ec\u4f9d\u8cf4\u95dc\u4fc2\u986f\u793a\n            if (cell.textContent.includes('\u8eab\u4efd\u8207\u6b0a\u9650')) {\n                highlightDependentServices(['\u7cfb\u7d71\u6574\u5408', '\u5b78\u751f\u751f\u547d\u9031\u671f']);\n            }\n        }\n\n        function hideDependencies() {\n            const cells = document.querySelectorAll('.roadmap-cell');\n            cells.forEach(cell => {\n                cell.classList.remove('dependency-highlight');\n            });\n        }\n\n        function highlightDependentServices(services) {\n            const cells = document.querySelectorAll('.roadmap-cell');\n            cells.forEach(cell => {\n                services.forEach(service => {\n                    if (cell.textContent.includes(service)) {\n                        cell.classList.add('dependency-highlight');\n                    }\n                });\n            });\n        }\n\n        function showAllDependencies() {\n            // \u986f\u793a\u6240\u6709\u4f9d\u8cf4\u95dc\u4fc2\n            const cells = document.querySelectorAll('.roadmap-cell');\n            cells.forEach(cell => {\n                cell.classList.add('show-dependencies');\n            });\n        }\n\n        // \u65b0\u589e CSS \u985e\u5225\n        const style = document.createElement('style');\n        style.textContent = `\n            .highlight-roi {\n                border: 3px solid #28a745 !important;\n                box-shadow: 0 0 15px rgba(40, 167, 69, 0.5) !important;\n            }\n            .highlight-risk {\n                border: 3px solid #dc3545 !important;\n                box-shadow: 0 0 15px rgba(220, 53, 69, 0.5) !important;\n            }\n            .highlight-complexity {\n                border: 3px solid #ffc107 !important;\n                box-shadow: 0 0 15px rgba(255, 193, 7, 0.5) !important;\n            }\n            .dependency-highlight {\n                border: 2px dashed #F58220 !important;\n                opacity: 0.8;\n            }\n        `;\n        document.head.appendChild(style);\n\n        // Accordion functionality
+        // Accordion functionality
         document.addEventListener('DOMContentLoaded', function() {
             const accordionHeaders = document.querySelectorAll('.accordion-header');
             accordionHeaders.forEach(header => {
@@ -4528,322 +3736,7 @@
                 });
             });
         });
-
-        // 清理并重新實現互動功能
-        document.addEventListener('DOMContentLoaded', function() {
-            // 確保只運行一次
-            if (window.roadmapInitialized) return;
-            window.roadmapInitialized = true;
-
-            // 創建更明顯的狀態指示器
-            const statusDiv = document.createElement('div');
-            statusDiv.id = 'roadmap-status';
-            statusDiv.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: linear-gradient(135deg, #F58220, #ff9538);
-                color: white;
-                padding: 20px 40px;
-                border-radius: 15px;
-                font-size: 24px;
-                font-weight: 700;
-                z-index: 9999;
-                opacity: 0;
-                transition: all 0.5s ease;
-                box-shadow: 0 10px 30px rgba(245, 130, 32, 0.5);
-                border: 3px solid white;
-                text-align: center;
-                pointer-events: none;
-                min-width: 300px;
-            `;
-            document.body.appendChild(statusDiv);
-
-
-            // 添加所有動畫效果
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes pulseGlow {
-                    0% { box-shadow: 0 0 30px rgba(245, 130, 32, 0.8); }
-                    50% { box-shadow: 0 0 60px rgba(245, 130, 32, 1); }
-                    100% { box-shadow: 0 0 30px rgba(245, 130, 32, 0.8); }
-                }
-                @keyframes roiBounce {
-                    0% { transform: translateY(-10px) scale(1.15) rotateY(0deg); }
-                    100% { transform: translateY(-15px) scale(1.2) rotateY(3deg); }
-                }
-                @keyframes riskShake {
-                    0% { transform: translateY(-10px) scale(1.15) rotateZ(-1deg); }
-                    100% { transform: translateY(-10px) scale(1.15) rotateZ(1deg); }
-                }
-                @keyframes complexityPulse {
-                    0% { transform: translateY(-10px) scale(1.15); opacity: 0.9; }
-                    50% { transform: translateY(-12px) scale(1.18); opacity: 1; }
-                    100% { transform: translateY(-10px) scale(1.15); opacity: 0.9; }
-                }
-                @keyframes dependencyFlow {
-                    0% { border-color: #F58220; }
-                    25% { border-color: #ff9538; }
-                    50% { border-color: #ffab5a; }
-                    75% { border-color: #ff9538; }
-                    100% { border-color: #F58220; }
-                }
-                @keyframes phaseHighlight {
-                    0% { 
-                        transform: translateY(-15px) scale(1.25) rotateZ(-2deg);
-                        box-shadow: 0 0 50px rgba(245, 130, 32, 1);
-                    }
-                    50% { 
-                        transform: translateY(-20px) scale(1.3) rotateZ(2deg);
-                        box-shadow: 0 0 80px rgba(245, 130, 32, 1);
-                    }
-                    100% { 
-                        transform: translateY(-15px) scale(1.25) rotateZ(-2deg);
-                        box-shadow: 0 0 50px rgba(245, 130, 32, 1);
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-
-            // 視圖切換功能
-            function applyViewFilter(viewType) {
-                const cells = document.querySelectorAll('.roadmap-cell');
-                let highlightedCount = 0;
-
-                // 清除所有樣式
-                cells.forEach(cell => {
-                    cell.style.border = '';
-                    cell.style.boxShadow = '';
-                    cell.style.transform = '';
-                    cell.style.background = '';
-                    cell.style.color = '';
-                    cell.style.fontWeight = '';
-                    cell.style.zIndex = '';
-                    cell.style.opacity = '';
-                    cell.style.filter = '';
-                    cell.style.animation = '';
-                });
-
-                switch(viewType) {
-                    case 'roi':
-                        cells.forEach(cell => {
-                            const roi = parseInt(cell.dataset.roi);
-                            if (roi >= 100) {
-                                // 強烈的綠色高亮效果
-                                cell.style.border = '6px solid #28a745';
-                                cell.style.boxShadow = '0 0 40px rgba(40, 167, 69, 1), inset 0 0 20px rgba(40, 167, 69, 0.3)';
-                                cell.style.transform = 'translateY(-10px) scale(1.15)';
-                                cell.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
-                                cell.style.color = 'white';
-                                cell.style.fontWeight = '900';
-                                cell.style.zIndex = '200';
-                                cell.style.animation = 'roiBounce 1s ease-in-out infinite alternate';
-                                highlightedCount++;
-                            } else {
-                                // 變暗未選中的項目
-                                cell.style.opacity = '0.3';
-                                cell.style.filter = 'grayscale(70%)';
-                            }
-                        });
-                        showStatus(`💰 ROI視圖模式\n找到 ${highlightedCount} 個高收益服務 (≥100%)`);
-                        break;
-                    case 'risk':
-                        cells.forEach(cell => {
-                            const risk = cell.dataset.risk;
-                            if (risk === '高') {
-                                // 強烈的紅色警告效果
-                                cell.style.border = '6px solid #dc3545';
-                                cell.style.boxShadow = '0 0 40px rgba(220, 53, 69, 1), inset 0 0 20px rgba(220, 53, 69, 0.3)';
-                                cell.style.transform = 'translateY(-10px) scale(1.15)';
-                                cell.style.background = 'linear-gradient(135deg, #dc3545, #e74c3c)';
-                                cell.style.color = 'white';
-                                cell.style.fontWeight = '900';
-                                cell.style.zIndex = '200';
-                                cell.style.animation = 'riskShake 0.5s ease-in-out infinite alternate';
-                                highlightedCount++;
-                            } else {
-                                cell.style.opacity = '0.3';
-                                cell.style.filter = 'grayscale(70%)';
-                            }
-                        });
-                        showStatus(`⚠️ 風險視圖模式\n發現 ${highlightedCount} 個高風險服務`);
-                        break;
-                    case 'complexity':
-                        cells.forEach(cell => {
-                            if (cell.classList.contains('high-complexity')) {
-                                // 黃色複雜度提醒
-                                cell.style.border = '6px solid #ffc107';
-                                cell.style.boxShadow = '0 0 40px rgba(255, 193, 7, 1), inset 0 0 20px rgba(255, 193, 7, 0.3)';
-                                cell.style.transform = 'translateY(-10px) scale(1.15)';
-                                cell.style.background = 'linear-gradient(135deg, #ffc107, #ffdb4d)';
-                                cell.style.color = '#333';
-                                cell.style.fontWeight = '900';
-                                cell.style.zIndex = '200';
-                                cell.style.animation = 'complexityPulse 1.5s ease-in-out infinite';
-                                highlightedCount++;
-                            } else {
-                                cell.style.opacity = '0.3';
-                                cell.style.filter = 'grayscale(70%)';
-                            }
-                        });
-                        showStatus(`🔧 複雜度視圖模式\n標示 ${highlightedCount} 個高複雜度服務`);
-                        break;
-                    case 'dependencies':
-                        cells.forEach(cell => {
-                            if (cell.textContent.trim() !== '') {
-                                cell.style.border = '4px dashed #F58220';
-                                cell.style.transform = 'translateY(-5px) scale(1.08)';
-                                cell.style.boxShadow = '0 8px 25px rgba(245, 130, 32, 0.6)';
-                                cell.style.background = 'rgba(245, 130, 32, 0.1)';
-                                cell.style.animation = 'dependencyFlow 2s ease-in-out infinite';
-                                highlightedCount++;
-                            }
-                        });
-                        showStatus(`🔗 依賴關係視圖模式\n顯示 ${highlightedCount} 個服務間關聯`);
-                        break;
-                    default:
-                        showStatus(`📋 預設視圖模式\n顯示所有服務`);
-                        break;
-                }
-            }
-
-            // 階段高亮功能
-            function highlightPhase(phaseNumber) {
-                console.log('高亮階段:', phaseNumber);
-                
-                const cells = document.querySelectorAll('.roadmap-cell');
-                
-                // 清除之前的高亮
-                cells.forEach(cell => {
-                    cell.style.border = '';
-                    cell.style.boxShadow = '';
-                    cell.style.transform = '';
-                    cell.style.animation = '';
-                    cell.style.zIndex = '';
-                });
-
-                // 計算網格中對應的列
-                const gridContainer = document.querySelector('.roadmap-grid');
-                const gridCells = Array.from(gridContainer.querySelectorAll('.roadmap-cell'));
-                const phaseCells = [];
-                
-                // 找到該階段的所有服務cell
-                gridCells.forEach((cell, index) => {
-                    const col = index % 5; // 5列：顧問 + 4個階段 (去除了產學合作模組列)
-                    if (col === phaseNumber - 1 && cell.textContent.trim() !== '') {
-                        phaseCells.push(cell);
-                    }
-                });
-
-                console.log(`找到 ${phaseCells.length} 個第${phaseNumber}階段服務`);
-
-                // 先讓其他所有cell變暗
-                cells.forEach(cell => {
-                    if (!phaseCells.includes(cell)) {
-                        cell.style.opacity = '0.2';
-                        cell.style.filter = 'grayscale(80%) blur(1px)';
-                    }
-                });
-
-                // 強烈高亮所選階段
-                phaseCells.forEach(cell => {
-                    cell.style.border = '8px solid #F58220';
-                    cell.style.boxShadow = '0 0 60px rgba(245, 130, 32, 1), inset 0 0 30px rgba(245, 130, 32, 0.3)';
-                    cell.style.transform = 'translateY(-15px) scale(1.25)';
-                    cell.style.zIndex = '300';
-                    cell.style.animation = 'phaseHighlight 1.5s ease-in-out infinite';
-                    cell.style.background = 'linear-gradient(135deg, rgba(245, 130, 32, 0.2), rgba(255, 149, 56, 0.3))';
-                    cell.style.fontWeight = '900';
-                });
-
-                const phaseNames = ['🏛️ 顧問階段', '🚀 第一階段', '📚 第二階段', '📊 第三階段', '🎯 第四階段'];
-                showStatus(`${phaseNames[phaseNumber - 1]}\n發現 ${phaseCells.length} 個核心服務`);
-
-                // 4秒後清除高亮
-                setTimeout(() => {
-                    cells.forEach(cell => {
-                        cell.style.border = '';
-                        cell.style.boxShadow = '';
-                        cell.style.transform = '';
-                        cell.style.animation = '';
-                        cell.style.zIndex = '';
-                        cell.style.opacity = '';
-                        cell.style.filter = '';
-                        cell.style.background = '';
-                        cell.style.fontWeight = '';
-                    });
-                    hideStatus();
-                }, 4000);
-            }
-
-            // 顯示狀態
-            function showStatus(message) {
-                const statusDiv = document.getElementById('roadmap-status');
-                if (statusDiv) {
-                    statusDiv.textContent = message;
-                    statusDiv.style.opacity = '1';
-                    
-                    // 2秒後自動隱藏
-                    clearTimeout(window.statusTimeout);
-                    window.statusTimeout = setTimeout(() => {
-                        hideStatus();
-                    }, 2000);
-                }
-            }
-
-            // 隱藏狀態
-            function hideStatus() {
-                const statusDiv = document.getElementById('roadmap-status');
-                if (statusDiv) {
-                    statusDiv.style.opacity = '0';
-                }
-                clearTimeout(window.statusTimeout);
-            }
-
-            // 綁定視圖切換按鈕事件
-            setTimeout(() => {
-                const viewToggles = document.querySelectorAll('.view-toggle');
-                viewToggles.forEach(toggle => {
-                    // 移除舊事件監聽器
-                    toggle.onclick = null;
-                    toggle.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        const viewType = this.dataset.view;
-                        console.log('切換視圖:', viewType);
-                        
-                        // 更新按鈕狀態
-                        viewToggles.forEach(t => t.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        // 應用視圖
-                        applyViewFilter(viewType);
-                    });
-                });
-                console.log('視圖切換按鈕事件已綁定');
-            }, 500);
-
-            // 綁定時間軸點擊事件
-            setTimeout(() => {
-                const timelineMilestones = document.querySelectorAll('.timeline-milestone');
-                timelineMilestones.forEach((milestone, index) => {
-                    // 移除舊事件監聽器
-                    milestone.onclick = null;
-                    milestone.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log('點擊時間軸:', index + 1);
-                        highlightPhase(index + 1);
-                    });
-                });
-                console.log('時間軸點擊事件已綁定');
-            }, 500);
-        });
-
-        // 完成互動功能設置
-        console.log('Roadmap 互動功能已啟用');
     </script>
 </body>
+</html>
 </html>
