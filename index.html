@@ -797,10 +797,6 @@
             try {
                 console.log('嘗試載入技術文章:', articleName);
                 
-                // 創建一個容器來包含文章內容
-                const container = document.createElement('div');
-                container.className = 'w-full h-full overflow-y-auto p-6';
-                
                 // 使用fetch載入文章內容
                 const response = await fetch(`技術文章/${articleName}`);
                 if (!response.ok) {
@@ -811,24 +807,16 @@
                 
                 // 創建文章內容容器
                 const articleContainer = document.createElement('div');
-                articleContainer.className = 'prose prose-slate dark:prose-invert max-w-none';
+                articleContainer.className = 'prose prose-slate dark:prose-invert max-w-none p-6';
                 articleContainer.innerHTML = articleContent;
                 
-                // 將文章內容添加到容器
-                container.appendChild(articleContainer);
+                // 直接載入到articles-content頁面
+                const articlesContent = document.getElementById('articles-content');
+                articlesContent.innerHTML = '';
+                articlesContent.appendChild(articleContainer);
                 
-                // 清空當前內容並載入容器
-                const contentArea = document.getElementById('page-content');
-                contentArea.innerHTML = '';
-                contentArea.appendChild(container);
-                
-                // 更新頁面標題
-                document.getElementById('page-title').textContent = '技術文章';
-                
-                // 隱藏所有頁面內容
-                document.querySelectorAll('.page-content').forEach(content => {
-                    content.classList.add('hidden');
-                });
+                // 顯示技術文章頁面
+                loadPage('articles', document.querySelector('.nav-item[onclick*="articles"]'));
                 
                 console.log('技術文章載入成功:', articleName);
                 
