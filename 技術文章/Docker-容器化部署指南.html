@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker 容器化部署指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .prose {
+            max-width: 65ch;
+            margin: 0 auto;
+        }
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+            color: #1e293b;
+        }
+        .dark .prose h1, .dark .prose h2, .dark .prose h3, .dark .prose h4 {
+            color: #f1f5f9;
+        }
+        .prose p, .prose li {
+            color: #475569;
+        }
+        .dark .prose p, .dark .prose li {
+            color: #cbd5e1;
+        }
+        .prose code {
+            background-color: #f1f5f9;
+            color: #dc2626;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+        }
+        .dark .prose code {
+            background-color: #1e293b;
+            color: #fca5a5;
+        }
+        .prose pre {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+    <div class="container mx-auto p-8">
+        <article class="prose prose-lg dark:prose-invert mx-auto">
+            <header class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4">Docker 容器化部署指南</h1>
+                <p class="text-xl text-slate-600 dark:text-slate-400">從零開始學習 Docker 容器化技術與最佳實踐</p>
+                <div class="flex justify-center items-center space-x-4 mt-4 text-sm text-slate-500 dark:text-slate-400">
+                    <span>作者：d11252002</span>
+                    <span>發布日期：2025-01-27</span>
+                    <span>閱讀時間：20 分鐘</span>
+                </div>
+            </header>
+
+            <section class="mb-8">
+                <h2>什麼是 Docker？</h2>
+                <p>
+                    Docker 是一個開源的容器化平台，它允許開發者將應用程式和其依賴項打包到一個稱為容器的標準化單元中。
+                    容器化技術解決了「在我機器上能運行」的問題，確保應用程式在任何環境中都能一致地運行。
+                </p>
+            </section>
+
+            <section class="mb-8">
+                <h2>Docker 核心概念</h2>
+                
+                <h3>1. 容器 (Container)</h3>
+                <p>
+                    容器是 Docker 的基本運行單元，它是一個輕量級、獨立的可執行軟體包，包含運行應用程式所需的一切：
+                    代碼、運行時、系統工具、系統庫和設置。
+                </p>
+
+                <h3>2. 映像 (Image)</h3>
+                <p>
+                    Docker 映像是容器的模板，它是一個只讀的模板，包含創建 Docker 容器的指令。
+                    映像通常基於其他映像構建，並添加額外的自定義功能。
+                </p>
+
+                <h3>3. 倉庫 (Repository)</h3>
+                <p>
+                    Docker 倉庫是存儲 Docker 映像的地方，可以是公共的（如 Docker Hub）或私有的。
+                    倉庫允許您與團隊成員共享映像，並在不同環境中部署相同的應用程式。
+                </p>
+            </section>
+
+            <section class="mb-8">
+                <h2>安裝 Docker</h2>
+                
+                <h3>在 macOS 上安裝</h3>
+                <pre><code># 使用 Homebrew 安裝
+brew install --cask docker
+
+# 或者從官網下載 Docker Desktop
+# https://www.docker.com/products/docker-desktop</code></pre>
+
+                <h3>在 Ubuntu 上安裝</h3>
+                <pre><code># 更新套件索引
+sudo apt-get update
+
+# 安裝必要的套件
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+
+# 添加 Docker 的官方 GPG 金鑰
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+# 設置穩定版倉庫
+echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# 安裝 Docker Engine
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+# 啟動 Docker 服務
+sudo systemctl start docker
+sudo systemctl enable docker</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>基本 Docker 命令</h2>
+                
+                <h3>映像管理</h3>
+                <pre><code># 拉取映像
+docker pull nginx:latest
+
+# 列出本地映像
+docker images
+
+# 刪除映像
+docker rmi nginx:latest
+
+# 構建映像
+docker build -t myapp:1.0 .</code></pre>
+
+                <h3>容器管理</h3>
+                <pre><code># 運行容器
+docker run -d -p 8080:80 --name my-nginx nginx
+
+# 列出運行中的容器
+docker ps
+
+# 列出所有容器
+docker ps -a
+
+# 停止容器
+docker stop my-nginx
+
+# 啟動容器
+docker start my-nginx
+
+# 刪除容器
+docker rm my-nginx
+
+# 查看容器日誌
+docker logs my-nginx
+
+# 進入容器
+docker exec -it my-nginx bash</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>創建 Dockerfile</h2>
+                <p>
+                    Dockerfile 是創建 Docker 映像的指令文件，它包含一系列指令來構建映像。
+                </p>
+
+                <h3>Node.js 應用程式示例</h3>
+                <pre><code># 使用官方 Node.js 映像作為基礎
+FROM node:18-alpine
+
+# 設置工作目錄
+WORKDIR /app
+
+# 複製 package.json 和 package-lock.json
+COPY package*.json ./
+
+# 安裝依賴項
+RUN npm ci --only=production
+
+# 複製應用程式代碼
+COPY . .
+
+# 暴露端口
+EXPOSE 3000
+
+# 啟動應用程式
+CMD ["npm", "start"]</code></pre>
+
+                <h3>Python 應用程式示例</h3>
+                <pre><code># 使用官方 Python 映像
+FROM python:3.11-slim
+
+# 設置工作目錄
+WORKDIR /app
+
+# 複製 requirements.txt
+COPY requirements.txt .
+
+# 安裝依賴項
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 複製應用程式代碼
+COPY . .
+
+# 暴露端口
+EXPOSE 8000
+
+# 啟動應用程式
+CMD ["python", "app.py"]</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>Docker Compose</h2>
+                <p>
+                    Docker Compose 是一個用於定義和運行多容器 Docker 應用程式的工具。
+                    它使用 YAML 文件來配置應用程式的服務。
+                </p>
+
+                <h3>docker-compose.yml 示例</h3>
+                <pre><code>version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - db
+    volumes:
+      - ./logs:/app/logs
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:</code></pre>
+
+                <h3>Compose 命令</h3>
+                <pre><code># 啟動服務
+docker-compose up -d
+
+# 停止服務
+docker-compose down
+
+# 查看服務狀態
+docker-compose ps
+
+# 查看服務日誌
+docker-compose logs
+
+# 重新構建服務
+docker-compose up --build</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>最佳實踐</h2>
+                
+                <h3>1. 使用多階段構建</h3>
+                <pre><code># 構建階段
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# 生產階段
+FROM nginx:alpine
+COPY --from=builder /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]</code></pre>
+
+                <h3>2. 優化映像大小</h3>
+                <ul>
+                    <li>使用 Alpine Linux 基礎映像</li>
+                    <li>合併 RUN 指令減少層數</li>
+                    <li>清理不必要的文件</li>
+                    <li>使用 .dockerignore 排除不需要的文件</li>
+                </ul>
+
+                <h3>3. 安全性考慮</h3>
+                <ul>
+                    <li>不要以 root 用戶運行容器</li>
+                    <li>定期更新基礎映像</li>
+                    <li>掃描映像中的漏洞</li>
+                    <li>使用非特權端口</li>
+                </ul>
+
+                <h3>4. 環境變數管理</h3>
+                <pre><code># 使用 .env 文件
+NODE_ENV=production
+DATABASE_URL=postgresql://user:password@db:5432/myapp
+REDIS_URL=redis://redis:6379
+
+# 在 docker-compose.yml 中引用
+environment:
+  - NODE_ENV=${NODE_ENV}
+  - DATABASE_URL=${DATABASE_URL}</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>部署到生產環境</h2>
+                
+                <h3>1. 映像標籤策略</h3>
+                <pre><code># 為映像添加標籤
+docker tag myapp:latest myapp:v1.0.0
+docker tag myapp:latest myapp:latest
+
+# 推送到倉庫
+docker push myapp:v1.0.0
+docker push myapp:latest</code></pre>
+
+                <h3>2. 使用 Docker Swarm 或 Kubernetes</h3>
+                <p>
+                    對於生產環境，建議使用容器編排工具來管理多個容器實例。
+                </p>
+
+                <h3>3. 監控和日誌</h3>
+                <ul>
+                    <li>使用 Prometheus 監控容器指標</li>
+                    <li>使用 ELK Stack 收集和分析日誌</li>
+                    <li>設置健康檢查</li>
+                </ul>
+            </section>
+
+            <section class="mb-8">
+                <h2>常見問題與解決方案</h2>
+                
+                <h3>1. 容器無法啟動</h3>
+                <pre><code># 檢查容器日誌
+docker logs container_name
+
+# 檢查容器狀態
+docker inspect container_name
+
+# 以互動模式運行容器進行調試
+docker run -it image_name bash</code></pre>
+
+                <h3>2. 映像構建失敗</h3>
+                <pre><code># 清理構建緩存
+docker builder prune
+
+# 強制重新構建
+docker build --no-cache -t image_name .</code></pre>
+
+                <h3>3. 網絡連接問題</h3>
+                <pre><code># 創建自定義網絡
+docker network create my-network
+
+# 將容器連接到網絡
+docker run --network my-network image_name</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>總結</h2>
+                <p>
+                    Docker 容器化技術為現代應用程式開發和部署提供了強大的工具。
+                    通過遵循最佳實踐，您可以創建可移植、可擴展和易於維護的應用程式。
+                </p>
+                
+                <h3>關鍵要點：</h3>
+                <ul>
+                    <li>理解容器、映像和倉庫的概念</li>
+                    <li>掌握基本的 Docker 命令</li>
+                    <li>學會編寫有效的 Dockerfile</li>
+                    <li>使用 Docker Compose 管理多容器應用</li>
+                    <li>遵循安全性和性能最佳實踐</li>
+                    <li>為生產環境做好準備</li>
+                </ul>
+            </section>
+
+            <footer class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
+                <div class="flex justify-between items-center text-sm text-slate-500 dark:text-slate-400">
+                    <span>標籤：Docker, 容器化, DevOps, 部署</span>
+                    <span>最後更新：2025-01-27</span>
+                </div>
+            </footer>
+        </article>
+    </div>
+</body>
+</html> 

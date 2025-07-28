@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Hooks 最佳實踐</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .prose {
+            max-width: 65ch;
+            margin: 0 auto;
+        }
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+            color: #1e293b;
+        }
+        .dark .prose h1, .dark .prose h2, .dark .prose h3, .dark .prose h4 {
+            color: #f1f5f9;
+        }
+        .prose p, .prose li {
+            color: #475569;
+        }
+        .dark .prose p, .dark .prose li {
+            color: #cbd5e1;
+        }
+        .prose code {
+            background-color: #f1f5f9;
+            color: #dc2626;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+        }
+        .dark .prose code {
+            background-color: #1e293b;
+            color: #fca5a5;
+        }
+        .prose pre {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+    <div class="container mx-auto p-8">
+        <article class="prose prose-lg dark:prose-invert mx-auto">
+            <header class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4">React Hooks 最佳實踐</h1>
+                <p class="text-xl text-slate-600 dark:text-slate-400">深入理解 React Hooks 的使用技巧與常見陷阱</p>
+                <div class="flex justify-center items-center space-x-4 mt-4 text-sm text-slate-500 dark:text-slate-400">
+                    <span>作者：d11252002</span>
+                    <span>發布日期：2025-01-27</span>
+                    <span>閱讀時間：15 分鐘</span>
+                </div>
+            </header>
+
+            <section class="mb-8">
+                <h2>引言</h2>
+                <p>
+                    React Hooks 的引入徹底改變了我們編寫 React 組件的方式。它們讓我們能夠在函數組件中使用狀態和其他 React 特性，
+                    同時保持代碼的簡潔性和可讀性。本文將深入探討 Hooks 的最佳實踐，幫助您避免常見陷阱並寫出更好的代碼。
+                </p>
+            </section>
+
+            <section class="mb-8">
+                <h2>基本 Hooks 使用</h2>
+                
+                <h3>useState 最佳實踐</h3>
+                <p>
+                    useState 是最常用的 Hook，用於管理組件的本地狀態。以下是一些最佳實踐：
+                </p>
+                <ul>
+                    <li><strong>使用函數式更新</strong>：當新狀態依賴於舊狀態時，使用函數式更新</li>
+                    <li><strong>避免過度使用</strong>：不要為每個值都創建一個 state</li>
+                    <li><strong>合理命名</strong>：使用描述性的變數名</li>
+                </ul>
+
+                <pre><code>// 好的做法
+const [count, setCount] = useState(0);
+
+// 函數式更新
+setCount(prevCount => prevCount + 1);
+
+// 避免這樣做
+const [firstName, setFirstName] = useState('');
+const [lastName, setLastName] = useState('');
+// 應該合併為一個對象
+const [user, setUser] = useState({ firstName: '', lastName: '' });</code></pre>
+
+                <h3>useEffect 最佳實踐</h3>
+                <p>
+                    useEffect 用於處理副作用，如數據獲取、訂閱或手動操作 DOM。
+                </p>
+                <ul>
+                    <li><strong>明確依賴項</strong>：總是明確指定依賴項數組</li>
+                    <li><strong>清理函數</strong>：在需要時返回清理函數</li>
+                    <li><strong>避免無限循環</strong>：確保依賴項不會導致無限重新渲染</li>
+                </ul>
+
+                <pre><code>// 好的做法
+useEffect(() => {
+    const subscription = api.subscribe(userId);
+    return () => subscription.unsubscribe();
+}, [userId]);
+
+// 避免這樣做
+useEffect(() => {
+    fetchData();
+}, []); // 缺少依賴項</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>自定義 Hooks</h2>
+                <p>
+                    自定義 Hooks 是 React Hooks 最強大的特性之一，它們讓我們能夠提取和重用狀態邏輯。
+                </p>
+
+                <h3>創建自定義 Hook</h3>
+                <pre><code>// useLocalStorage.js
+import { useState, useEffect } from 'react';
+
+function useLocalStorage(key, initialValue) {
+    const [storedValue, setStoredValue] = useState(() => {
+        try {
+            const item = window.localStorage.getItem(key);
+            return item ? JSON.parse(item) : initialValue;
+        } catch (error) {
+            console.error(error);
+            return initialValue;
+        }
+    });
+
+    const setValue = value => {
+        try {
+            const valueToStore = value instanceof Function ? value(storedValue) : value;
+            setStoredValue(valueToStore);
+            window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    return [storedValue, setValue];
+}
+
+export default useLocalStorage;</code></pre>
+
+                <h3>使用自定義 Hook</h3>
+                <pre><code>function MyComponent() {
+    const [name, setName] = useLocalStorage('name', '');
+    
+    return (
+        &lt;input
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="Enter your name"
+        /&gt;
+    );
+}</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>常見陷阱與解決方案</h2>
+                
+                <h3>1. 閉包陷阱</h3>
+                <p>
+                    在 useEffect 中使用過期的值是一個常見問題。
+                </p>
+                <pre><code>// 問題代碼
+function Counter() {
+    const [count, setCount] = useState(0);
+    
+    useEffect(() => {
+        const timer = setInterval(() => {
+            console.log(count); // 總是顯示初始值
+        }, 1000);
+        
+        return () => clearInterval(timer);
+    }, []); // 空依賴項數組
+}</code></pre>
+
+                <p>解決方案：</p>
+                <pre><code>// 解決方案 1：使用 useRef
+function Counter() {
+    const [count, setCount] = useState(0);
+    const countRef = useRef(count);
+    
+    useEffect(() => {
+        countRef.current = count;
+    });
+    
+    useEffect(() => {
+        const timer = setInterval(() => {
+            console.log(countRef.current);
+        }, 1000);
+        
+        return () => clearInterval(timer);
+    }, []);
+}
+
+// 解決方案 2：使用函數式更新
+function Counter() {
+    const [count, setCount] = useState(0);
+    
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCount(c => {
+                console.log(c);
+                return c + 1;
+            });
+        }, 1000);
+        
+        return () => clearInterval(timer);
+    }, []);
+}</code></pre>
+
+                <h3>2. 依賴項管理</h3>
+                <p>
+                    使用 useCallback 和 useMemo 來優化性能，但要注意不要過度使用。
+                </p>
+                <pre><code>// 好的做法
+const memoizedCallback = useCallback(
+    () => {
+        doSomething(a, b);
+    },
+    [a, b],
+);
+
+const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>性能優化</h2>
+                
+                <h3>使用 React.memo</h3>
+                <p>
+                    當組件的 props 沒有變化時，React.memo 可以避免不必要的重新渲染。
+                </p>
+                <pre><code>const MyComponent = React.memo(function MyComponent(props) {
+    return &lt;div&gt;{props.name}&lt;/div&gt;;
+});</code></pre>
+
+                <h3>使用 useMemo 和 useCallback</h3>
+                <p>
+                    對於昂貴的計算和函數，使用 useMemo 和 useCallback 來避免重複計算。
+                </p>
+                <pre><code>function ExpensiveComponent({ items }) {
+    const expensiveValue = useMemo(() => {
+        return items.reduce((acc, item) => acc + item.value, 0);
+    }, [items]);
+
+    const handleClick = useCallback(() => {
+        console.log('Button clicked');
+    }, []);
+
+    return (
+        &lt;div&gt;
+            &lt;p&gt;Total: {expensiveValue}&lt;/p&gt;
+            &lt;button onClick={handleClick}&gt;Click me&lt;/button&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>測試 Hooks</h2>
+                <p>
+                    測試 Hooks 需要特殊的方法，因為它們只能在組件內部使用。
+                </p>
+                <pre><code>import { renderHook, act } from '@testing-library/react-hooks';
+import useCounter from './useCounter';
+
+test('should increment counter', () => {
+    const { result } = renderHook(() => useCounter());
+
+    act(() => {
+        result.current.increment();
+    });
+
+    expect(result.current.count).toBe(1);
+});</code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2>總結</h2>
+                <p>
+                    React Hooks 為我們提供了一種更簡潔、更強大的方式來管理組件狀態和副作用。
+                    通過遵循這些最佳實踐，我們可以寫出更可維護、更高效的代碼。
+                </p>
+                
+                <h3>關鍵要點：</h3>
+                <ul>
+                    <li>總是明確指定 useEffect 的依賴項</li>
+                    <li>使用自定義 Hooks 來提取和重用邏輯</li>
+                    <li>注意閉包陷阱，適當使用 useRef</li>
+                    <li>合理使用 useMemo 和 useCallback 進行性能優化</li>
+                    <li>為 Hooks 編寫適當的測試</li>
+                </ul>
+            </section>
+
+            <footer class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
+                <div class="flex justify-between items-center text-sm text-slate-500 dark:text-slate-400">
+                    <span>標籤：React, JavaScript, 前端開發</span>
+                    <span>最後更新：2025-01-27</span>
+                </div>
+            </footer>
+        </article>
+    </div>
+</body>
+</html> 
