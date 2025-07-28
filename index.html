@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini CLI 互動式命令指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 
+        Chosen Palette: Calm Harmony (Slate and Sky)
+        Application Structure Plan: A tab-based navigation to switch between the two main CLI implementations (Google Official vs. Zibri/gemini-cli). This structure was chosen because the source report's primary finding is the existence of these two distinct tools. A tabbed interface allows for direct comparison and focused exploration, which is more user-friendly than a long, linear document. Each tab contains a visual chart overview of command categories and a searchable list of command cards for quick reference. This task-oriented design helps users find relevant information for their specific tool efficiently.
+        Visualization & Content Choices: 
+        - Report Info: Two different CLI tools -> Goal: Compare -> Viz/Presentation: Tabbed navigation -> Interaction: Click to switch views -> Justification: Directly addresses the core distinction in the report for clear, focused browsing -> Vanilla JS.
+        - Report Info: Command categories for each CLI -> Goal: Organize & Inform -> Viz/Presentation: Donut Chart (Google) & Bar Chart (Zibri) -> Interaction: Hover for tooltips -> Justification: Provides a quick visual summary of the tool's scope. A bar chart was chosen for Zibri due to its larger number of categories, ensuring label readability -> Chart.js/Canvas.
+        - Report Info: Detailed list of slash commands -> Goal: Organize & Inform -> Viz/Presentation: Searchable card-based grid -> Interaction: Live text search to filter cards -> Justification: Modern, readable, and highly functional for finding specific commands in a long list -> Tailwind CSS + Vanilla JS.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 320px;
+            width: 100%;
+            max-width: 450px;
+        }
+        .active-tab {
+            background-color: #0284c7; /* sky-600 */
+            color: white;
+            border-color: #0284c7;
+        }
+        .inactive-tab {
+            background-color: white;
+            color: #334155; /* slate-700 */
+            border-color: #cbd5e1; /* slate-300 */
+        }
+        .command-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .command-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Gemini CLI 互動式命令指南</h1>
+            <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">一個將 <a href="https://gemini.google.com/" target="_blank" class="text-sky-600 hover:underline">Gemini</a> 的強大功能帶到您終端機的工具。本指南將幫助您探索兩種主要 CLI 實作的斜線命令。</p>
+        </header>
+
+        <nav class="flex justify-center mb-8 space-x-2 md:space-x-4">
+            <button id="btn-google" class="px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg border transition-colors duration-300 active-tab">
+                <span class="text-xl">🚀</span> 官方 Google CLI
+            </button>
+            <button id="btn-zibri" class="px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg border transition-colors duration-300 inactive-tab">
+                <span class="text-xl">⚙️</span> Zibri/gemini-cli
+            </button>
+        </nav>
+
+        <main>
+            <!-- Google CLI Content -->
+            <div id="content-google">
+                <section class="bg-white p-6 rounded-xl shadow-md mb-8">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">官方 Google Gemini CLI</h2>
+                    <p class="text-slate-600 mb-6">這是由 Google 官方為開發者設計的 CLI，通常與 Gemini Code Assist 整合。其命令主要側重於與 AI 代理及其內建工具互動，以執行程式碼相關的任務，如錯誤修復、新功能開發等。它透過 `npm` 安裝，並利用「思考與行動」循環機制與您的本地環境互動。</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                        <div class="lg:col-span-2">
+                            <h3 class="text-xl font-semibold text-center mb-2 text-slate-700">命令類別分佈</h3>
+                            <div class="chart-container">
+                                <canvas id="googleChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-3">
+                             <h3 class="text-xl font-semibold mb-4 text-slate-700">主要特性</h3>
+                             <ul class="space-y-3 text-slate-600">
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">▶</span>
+                                    <div><strong class="text-slate-800">深度程式碼整合：</strong> 使用 `@` 符號輕鬆將檔案或資料夾引入 AI 的上下文，實現對程式碼庫的理解。</div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">▶</span>
+                                    <div><strong class="text-slate-800">內建工具集：</strong> 透過 `/tools` 命令，可以存取檔案操作、網頁搜尋、Shell 執行等強大功能，並在執行前請求許可。</div>
+                                 </li>
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">▶</span>
+                                    <div><strong class="text-slate-800">可擴展性：</strong> 支援模型上下文協定（MCP）伺服器，可整合 GitHub 等外部服務，處理更複雜的任務。</div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">▶</span>
+                                    <div><strong class="text-slate-800">使用情況追蹤：</strong> `/stats` 命令提供即時的代幣使用量和會話持續時間，方便監控資源消耗。</div>
+                                </li>
+                             </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="mb-6">
+                    <input type="text" id="search-google" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="🔍 在此搜尋官方 CLI 命令...">
+                </div>
+
+                <div id="list-google" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                </div>
+            </div>
+
+            <!-- Zibri CLI Content -->
+            <div id="content-zibri" class="hidden">
+                <section class="bg-white p-6 rounded-xl shadow-md mb-8">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">Zibri/gemini-cli (社群版)</h2>
+                    <p class="text-slate-600 mb-6">這是一個獨立、功能豐富的 Google Gemini API 命令列客戶端，以 C 語言編寫。它提供了一套更廣泛的互動式命令，讓使用者能對會話管理、模型參數（如溫度、Top-K）和檔案附件進行更精細的控制，作為 Gemini API 的直接、強大的介面。</p>
+                     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                        <div class="lg:col-span-3">
+                             <h3 class="text-xl font-semibold mb-4 text-slate-700">主要特性</h3>
+                             <ul class="space-y-3 text-slate-600">
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">▶</span>
+                                    <div><strong class="text-slate-800">完整 API 控制：</strong> 可直接透過命令調整溫度 (`/temp`)、最大代幣 (`/maxtokens`)、Top-P/Top-K 等核心 API 參數。</div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">▶</span>
+                                    <div><strong class="text-slate-800">強大的會話管理：</strong> 支援命名會話的儲存、載入和刪除 (`/session save` 等)，方便在不同專案間切換。</div>
+                                 </li>
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">▶</span>
+                                    <div><strong class="text-slate-800">多模態與 I/O：</strong> 輕鬆附加檔案 (`/attach`)，並可將對話歷史匯出為 JSON 或 Markdown 檔案 (`/save`, `/export`)。</div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">▶</span>
+                                    <div><strong class="text-slate-800">系統提示設定：</strong> 使用 `/system` 命令為整個會話設定 AI 的角色或行為約束，實現深度自訂。</div>
+                                </li>
+                             </ul>
+                        </div>
+                        <div class="lg:col-span-2">
+                             <h3 class="text-xl font-semibold text-center mb-2 text-slate-700">命令類別分佈</h3>
+                             <div class="chart-container" style="max-width: 500px; height: 350px;">
+                                 <canvas id="zibriChart"></canvas>
+                             </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="mb-6">
+                    <input type="text" id="search-zibri" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="🔍 在此搜尋 Zibri/gemini-cli 命令...">
+                </div>
+
+                <div id="list-zibri" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const googleCommands = [
+                { command: '/help', category: '核心互動', description: '顯示 CLI 內的幫助訊息，包括命令、快捷鍵和上下文輸入說明。', notes: '對於新使用者入門和快速參考至關重要。' },
+                { command: '/tools', category: '核心互動', description: '列出 Gemini CLI 可用的所有內建工具，如檔案操作、網頁搜尋等。', notes: 'CLI 在調用工具前會提示許可。版本 0.1.7 存在已知錯誤。' },
+                { command: '/memory', category: '核心互動', description: '顯示已儲存記憶體的內容，允許模型記住使用者偏好。', notes: '版本 0.1.7 存在已知錯誤，可能顯示錯誤報告 URL。' },
+                { command: '/stats', category: '核心互動', description: '提供當前會話使用情況的摘要，如總代幣使用量和持續時間。', notes: '對於監控使用效率和資源消耗很有用。' },
+                { command: '/mcp', category: '核心互動', description: '檢查當前配置的模型上下文協定（MCP）伺服器。', notes: '透過外部伺服器（如 GitHub MCP）擴展 CLI 功能。' },
+                { command: '/auth', category: '配置管理', description: '允許更改身份驗證方法（Google 帳戶、API 金鑰、Vertex AI）。', notes: '用於管理配額和存取層級。' },
+                { command: '/theme', category: '配置管理', description: '自訂 CLI 終端機介面的視覺主題。', notes: '在首次啟動時提示設定。' },
+                { command: '/quit', category: '配置管理', description: '優雅地退出 Gemini CLI 會話。', notes: '退出時顯示會話摘要。' },
+                { command: '!', category: '特殊模式', description: '切換到直接的系統 Shell 模式，允許執行系統命令。', notes: '透過 ESC 鍵退出；應避免互動式 Shell 命令。' },
+                { command: '@', category: '上下文輸入', description: '將檔案或資料夾引入 AI 的上下文。', notes: '非斜線命令，但為關鍵輸入機制；支援自動完成。' },
+                { command: 'Yolo mode', category: '特殊模式', description: '一項在 Gemini Code Assist for VS Code 中可用的功能。', notes: '具體功能未在提供的資料中詳細說明。' }
+            ];
+
+            const zibriCommands = [
+                { command: '/help', category: '一般命令', description: '顯示 Zibri/gemini-cli 的幫助訊息。' },
+                { command: '/exit, /quit', category: '一般命令', description: '退出程式。' },
+                { command: '/clear', category: '一般命令', description: '清除當前對話歷史和任何待處理的附件。' },
+                { command: '/stats', category: '一般命令', description: '顯示會話統計資訊（模型、溫度、代幣計數等）。' },
+                { command: '/models', category: '一般命令', description: '列出 API 中所有可用的模型。' },
+                { command: '/config <save|load>', category: '一般命令', description: '儲存或載入當前設定到設定檔。' },
+                { command: '/system [prompt]', category: '對話控制', description: '設定或顯示影響模型行為的系統提示。' },
+                { command: '/clear_system', category: '對話控制', description: '移除當前設定的系統提示。' },
+                { command: '/temp [value]', category: '對話控制', description: '設定或顯示生成溫度（影響輸出的隨機性）。' },
+                { command: '/maxtokens [value]', category: '對話控制', description: '設定或顯示模型可以生成的最大輸出代幣數量。' },
+                { command: '/budget [value]', category: '對話控制', description: '設定或顯示最大思考預算（0 表示自動）。' },
+                { command: '/topk [value]', category: '對話控制', description: '設定或顯示 Top-K 採樣參數。' },
+                { command: '/topp [value]', category: '對話控制', description: '設定或顯示 Top-P 採樣參數。' },
+                { command: '/grounding [on|off]', category: '對話控制', description: '設定或顯示 Google 搜尋基礎的狀態。' },
+                { command: '/urlcontext [on|off]', category: '對話控制', description: '設定或顯示 URL 上下文擷取的狀態。' },
+                { command: '/attach <file> [prompt]', category: '附件與 I/O', description: '將檔案附加到當前提示，支援多模態輸入。' },
+                { command: '/paste', category: '附件與 I/O', description: '將標準輸入的文字作為 text/plain 附件貼上。' },
+                { command: '/savelast <file.txt>', category: '附件與 I/O', description: '僅將最後一個模型回應儲存到文字檔案。' },
+                { command: '/save <file.json>', category: '附件與 I/O', description: '將整個當前對話歷史儲存到 JSON 檔案。' },
+                { command: '/load <file.json>', category: '附件與 I/O', description: '從 JSON 檔案載入對話歷史。' },
+                { command: '/export <file.md>', category: '附件與 I/O', description: '將對話匯出為人類可讀的 Markdown 檔案。' },
+                { command: '/attachments list', category: '附件管理', description: '列出所有當前待處理的附件。' },
+                { command: '/attachments remove <index>', category: '附件管理', description: '透過索引移除待處理的附件。' },
+                { command: '/attachments clear', category: '附件管理', description: '移除所有待處理的附件。' },
+                { command: '/history attachments list', category: '歷史管理', description: '列出對話歷史中所有檔案附件及其 ID。' },
+                { command: '/history attachments remove <id>', category: '歷史管理', description: '透過 ID 移除歷史中的附件。' },
+                { command: '/keys list', category: '金鑰管理', description: '列出當前載入的 API 金鑰。' },
+                { command: '/keys add <key>', category: '金鑰管理', description: '為當前會話添加新的 API 金鑰。' },
+                { command: '/keys remove <index>', category: '金鑰管理', description: '透過索引移除會話的 API 金鑰。' },
+                { command: '/keys check', category: '金鑰管理', description: '驗證當前載入的 API 金鑰。' },
+                { command: '/session new', category: '會話管理', description: '開始一個新的、未儲存的會話。' },
+                { command: '/session list', category: '會話管理', description: '列出所有已儲存的對話會話。' },
+                { command: '/session save <name>', category: '會話管理', description: '將當前聊天歷史儲存到一個命名會話。' },
+                { command: '/session load <name>', category: '會話管理', description: '從命名會話載入對話。' },
+                { command: '/session delete <name>', category: '會話管理', description: '刪除命名會話。' }
+            ];
+
+            const categoryColors = {
+                '核心互動': '#0ea5e9', // sky-500
+                '配置管理': '#38bdf8', // sky-400
+                '特殊模式': '#7dd3fc', // sky-300
+                '上下文輸入': '#e0f2fe', // sky-100
+                '一般命令': '#14b8a6', // teal-500
+                '對話控制': '#2dd4bf', // teal-400
+                '附件與 I/O': '#5eead4', // teal-300
+                '附件管理': '#99f6e4', // teal-200
+                '歷史管理': '#ccfbf1', // teal-100
+                '金鑰管理': '#f0fdfa', // teal-50
+                '會話管理': '#a78bfa' // violet-400
+            };
+
+            const googleList = document.getElementById('list-google');
+            const zibriList = document.getElementById('list-zibri');
+            const searchGoogle = document.getElementById('search-google');
+            const searchZibri = document.getElementById('search-zibri');
+
+            function createCommandCard(commandData) {
+                const card = document.createElement('div');
+                card.className = 'command-card bg-white p-5 rounded-lg border border-slate-200 shadow-sm';
+                const notesHTML = commandData.notes ? `<p class="text-xs text-amber-700 bg-amber-100 rounded p-2 mt-3">💡 注意：${commandData.notes}</p>` : '';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <h4 class="text-lg font-bold text-slate-800 break-all">${commandData.command}</h4>
+                        <span class="text-xs font-medium text-white rounded-full px-2 py-1" style="background-color: ${categoryColors[commandData.category] || '#64748b'}">${commandData.category}</span>
+                    </div>
+                    <p class="text-slate-600 mt-2">${commandData.description}</p>
+                    ${notesHTML}
+                `;
+                return card;
+            }
+
+            function populateList(listElement, data) {
+                listElement.innerHTML = '';
+                data.forEach(cmd => {
+                    listElement.appendChild(createCommandCard(cmd));
+                });
+            }
+
+            function filterList(searchTerm, listElement) {
+                const cards = listElement.children;
+                const term = searchTerm.toLowerCase();
+                for (let card of cards) {
+                    const cardText = card.textContent.toLowerCase();
+                    if (cardText.includes(term)) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                }
+            }
+            
+            searchGoogle.addEventListener('input', (e) => filterList(e.target.value, googleList));
+            searchZibri.addEventListener('input', (e) => filterList(e.target.value, zibriList));
+
+            populateList(googleList, googleCommands);
+            populateList(zibriList, zibriCommands);
+
+            // Charting
+            function getCategoryData(commands) {
+                const counts = commands.reduce((acc, cmd) => {
+                    acc[cmd.category] = (acc[cmd.category] || 0) + 1;
+                    return acc;
+                }, {});
+                return {
+                    labels: Object.keys(counts),
+                    data: Object.values(counts),
+                    colors: Object.keys(counts).map(cat => categoryColors[cat] || '#64748b')
+                };
+            }
+
+            const googleChartData = getCategoryData(googleCommands);
+            const zibriChartData = getCategoryData(zibriCommands);
+
+            let googleChartInstance, zibriChartInstance;
+
+            function createGoogleChart() {
+                if (googleChartInstance) googleChartInstance.destroy();
+                const ctx = document.getElementById('googleChart').getContext('2d');
+                googleChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: googleChartData.labels,
+                        datasets: [{
+                            label: '命令數量',
+                            data: googleChartData.data,
+                            backgroundColor: googleChartData.colors,
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    font: { size: 12 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createZibriChart() {
+                if (zibriChartInstance) zibriChartInstance.destroy();
+                const ctx = document.getElementById('zibriChart').getContext('2d');
+                zibriChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: zibriChartData.labels,
+                        datasets: [{
+                            label: '命令數量',
+                            data: zibriChartData.data,
+                            backgroundColor: zibriChartData.colors,
+                            borderColor: zibriChartData.colors.map(c => c + 'B3'),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Tab functionality
+            const btnGoogle = document.getElementById('btn-google');
+            const btnZibri = document.getElementById('btn-zibri');
+            const contentGoogle = document.getElementById('content-google');
+            const contentZibri = document.getElementById('content-zibri');
+
+            function switchTab(activeBtn, inactiveBtn, activeContent, inactiveContent) {
+                activeBtn.classList.remove('inactive-tab');
+                activeBtn.classList.add('active-tab');
+                inactiveBtn.classList.remove('active-tab');
+                inactiveBtn.classList.add('inactive-tab');
+
+                activeContent.classList.remove('hidden');
+                inactiveContent.classList.add('hidden');
+            }
+
+            btnGoogle.addEventListener('click', () => {
+                switchTab(btnGoogle, btnZibri, contentGoogle, contentZibri);
+            });
+
+            btnZibri.addEventListener('click', () => {
+                switchTab(btnZibri, btnGoogle, contentZibri, contentGoogle);
+            });
+            
+            // Initial render
+            createGoogleChart();
+            createZibriChart();
+        });
+    </script>
+</body>
+</html>
