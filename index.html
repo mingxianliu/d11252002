@@ -415,82 +415,409 @@
                     <!-- Section: 安裝與基本設定 -->
                     <div id="claude-content-setup" class="claude-tab-content mb-10">
                         <h3 class="text-2xl font-semibold text-slate-800 border-b pb-2 mb-4">安裝與基本設定</h3>
-                        <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto"><code># 安裝 Claude Code
+                        
+                        <!-- 安裝指南 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">安裝方法</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <h5 class="text-lg font-semibold text-slate-600 mb-2">npm 安裝</h5>
+                                    <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto"><code># 全域安裝 Claude Code
 npm install -g @anthropic-ai/claude-code
 
-# 啟動 Claude Code
-claude
+# 驗證安裝
+claude --version
 
-# 危險模式（跳過權限確認）
+# 檢查更新
+npm update -g @anthropic-ai/claude-code</code></pre>
+                                </div>
+                                
+                                <div>
+                                    <h5 class="text-lg font-semibold text-slate-600 mb-2">Docker 安裝</h5>
+                                    <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto"><code># 使用 Docker 運行
+docker run -it --rm -v $(pwd):/workspace anthropic/claude-code
+
+# 指定工作目錄
+docker run -it --rm -v /path/to/project:/workspace anthropic/claude-code</code></pre>
+                                </div>
+                                
+                                <div>
+                                    <h5 class="text-lg font-semibold text-slate-600 mb-2">從源碼安裝</h5>
+                                    <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto"><code># 克隆倉庫
+git clone https://github.com/anthropics/claude-code.git
+cd claude-code
+
+# 安裝依賴
+npm install
+
+# 建置專案
+npm run build
+
+# 全域安裝
+npm link</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 基本設定 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">基本設定</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <h5 class="text-lg font-semibold text-slate-600 mb-2">環境變數設定</h5>
+                                    <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto"><code># 設定 API Key
+export ANTHROPIC_API_KEY="your-api-key-here"
+
+# 設定預設模型
+export CLAUDE_MODEL="claude-3-sonnet-20240229"
+
+# 設定輸出格式
+export CLAUDE_OUTPUT_FORMAT="text"</code></pre>
+                                </div>
+                                
+                                <div>
+                                    <h5 class="text-lg font-semibold text-slate-600 mb-2">專案初始化</h5>
+                                    <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto"><code># 初始化專案（建立 .claude 目錄）
+claude /init
+
+# 設定專案記憶體
+claude /memory
+
+# 查看專案設定
+claude /config</code></pre>
+                                </div>
+                                
+                                <div>
+                                    <h5 class="text-lg font-semibold text-slate-600 mb-2">權限設定</h5>
+                                    <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto"><code># 危險模式（跳過所有權限確認）
 claude --dangerously-skip-permissions
 
-# 無頭模式（用於自動化）
-claude -p "your prompt here"</code></pre>
+# 設定特定權限
+claude --permissions read,write,execute
+
+# 查看當前權限
+claude /permissions</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 使用技巧 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">使用技巧</h4>
+                            <div class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                                <ul class="text-blue-700 dark:text-blue-300 space-y-2">
+                                    <li><strong>專案記憶體</strong>：使用 <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">/memory</code> 管理專案上下文</li>
+                                    <li><strong>檔案引用</strong>：使用 <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">@filename</code> 讓 Claude 讀取檔案內容</li>
+                                    <li><strong>目錄掃描</strong>：使用 <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">@directory/</code> 讓 Claude 了解專案結構</li>
+                                    <li><strong>工具使用</strong>：Claude 可以執行檔案操作、搜尋、編輯等工具</li>
+                                    <li><strong>安全模式</strong>：預設會詢問權限，使用 <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">--dangerously-skip-permissions</code> 跳過</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Section: 基本快捷鍵 -->
                     <div id="claude-content-shortcuts" class="claude-tab-content mb-10 hidden">
-                        <h3 class="text-2xl font-semibold text-slate-800 border-b pb-2 mb-4">⌨️ 基本快捷鍵</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white border border-slate-200">
-                                <thead class="bg-slate-50">
-                                    <tr>
-                                        <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">快捷鍵</th>
-                                        <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
-                                        <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">說明</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-slate-700">
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + C</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">取消當前輸入或生成</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">標準中斷信號</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + D</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">退出 Claude Code 會話</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">EOF 信號</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">↑/↓ 箭頭</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">導航命令歷史</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">調用先前的輸入</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Esc</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">停止 Claude 執行</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">實際停止，不是退出</td></tr>
-                                </tbody>
-                            </table>
+                        <h3 class="text-2xl font-semibold text-slate-800 border-b pb-2 mb-4">⌨ 基本快捷鍵</h3>
+                        
+                        <!-- 會話控制快捷鍵 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">會話控制</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">快捷鍵</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">說明</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + C</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">取消當前輸入或生成</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">標準中斷信號</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + D</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">退出 Claude Code 會話</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">EOF 信號</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + L</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">清除螢幕</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">保持會話歷史</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Esc</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">停止 Claude 執行</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">實際停止，不是退出</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + Z</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">暫停會話</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">可恢復</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 導航快捷鍵 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">導航與歷史</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">快捷鍵</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">說明</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">↑/↓ 箭頭</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">導航命令歷史</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">調用先前的輸入</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + R</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">反向搜尋歷史</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">搜尋命令歷史</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + A</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">移動到行首</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">快速定位</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + E</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">移動到行尾</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">快速定位</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + U</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">清除當前行</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">重新輸入</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 編輯快捷鍵 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">編輯與操作</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">快捷鍵</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">說明</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Tab</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">自動補全</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">檔案路徑和命令</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + W</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">刪除單詞</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">向後刪除</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + K</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">刪除到行尾</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">清除後半行</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + Y</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">貼上</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">從剪貼簿貼上</td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">Ctrl + _</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">復原</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">復原編輯操作</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 使用技巧 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">使用技巧</h4>
+                            <div class="bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 p-4 rounded-r-lg">
+                                <ul class="text-green-700 dark:text-green-300 space-y-2">
+                                    <li><strong>歷史搜尋</strong>：使用 <code class="bg-green-100 dark:bg-green-800 px-1 rounded">Ctrl + R</code> 快速找到之前的命令</li>
+                                    <li><strong>自動補全</strong>：按 <code class="bg-green-100 dark:bg-green-800 px-1 rounded">Tab</code> 補全檔案路徑和命令</li>
+                                    <li><strong>快速編輯</strong>：使用 <code class="bg-green-100 dark:bg-green-800 px-1 rounded">Ctrl + A/E</code> 快速移動到行首/行尾</li>
+                                    <li><strong>安全退出</strong>：使用 <code class="bg-green-100 dark:bg-green-800 px-1 rounded">Ctrl + D</code> 正常退出，<code class="bg-green-100 dark:bg-green-800 px-1 rounded">Ctrl + C</code> 中斷當前操作</li>
+                                    <li><strong>暫停恢復</strong>：使用 <code class="bg-green-100 dark:bg-green-800 px-1 rounded">Ctrl + Z</code> 暫停會話，可用 <code class="bg-green-100 dark:bg-green-800 px-1 rounded">fg</code> 恢復</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Section: 核心斜線命令 -->
                     <div id="claude-content-commands" class="claude-tab-content mb-10 hidden">
-                        <h3 class="text-2xl font-semibold text-slate-800 border-b pb-2 mb-4">核心斜線命令</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white border border-slate-200">
-                                <thead class="bg-slate-50">
-                                    <tr>
-                                        <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">命令</th>
-                                        <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-slate-700">
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/help</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">顯示所有可用命令</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/clear</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">清除對話歷史</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/model</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">切換 AI 模型</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/init</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">初始化專案（建立 CLAUDE.md）</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">@filename</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">引用檔案內容</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">@directory/</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">引用目錄列表</td></tr>
-                                </tbody>
-                            </table>
+                        <h3 class="text-2xl font-semibold text-slate-800 border-b pb-2 mb-4">⚡ 核心斜線命令</h3>
+                        
+                        <!-- 基本命令 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">基本命令</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">命令</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">範例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/help</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">顯示所有可用命令</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/help</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/clear</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">清除對話歷史</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/clear</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/model</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">切換 AI 模型</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/model claude-3-sonnet</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/init</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">初始化專案</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/init</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/memory</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">管理專案記憶體</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/memory</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/config</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">查看專案設定</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/config</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 檔案引用命令 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">檔案引用命令</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">命令</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">範例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">@filename</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">引用檔案內容</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">@package.json</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">@directory/</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">引用目錄列表</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">@src/</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">@filename:line</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">引用特定行</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">@app.js:10-20</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">@filename:function</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">引用特定函數</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">@utils.js:formatDate</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 專案管理命令 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">專案管理命令</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">命令</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">範例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/search</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">搜尋檔案內容</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/search "function"</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/find</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">尋找檔案</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/find "*.js"</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/tree</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">顯示目錄結構</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/tree</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/status</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">查看專案狀態</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/status</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 工具命令 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">工具命令</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">命令</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">範例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/edit</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">編輯檔案</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/edit app.js</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/create</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">建立檔案</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/create new-file.js</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/run</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">執行命令</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/run npm install</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">/test</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">執行測試</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">/test</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 使用技巧 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">使用技巧</h4>
+                            <div class="bg-purple-50 dark:bg-purple-900/20 border-l-4 border-purple-500 p-4 rounded-r-lg">
+                                <ul class="text-purple-700 dark:text-purple-300 space-y-2">
+                                    <li><strong>檔案引用</strong>：使用 <code class="bg-purple-100 dark:bg-purple-800 px-1 rounded">@filename</code> 讓 Claude 讀取檔案內容，支援行號和函數名</li>
+                                    <li><strong>目錄掃描</strong>：使用 <code class="bg-purple-100 dark:bg-purple-800 px-1 rounded">@directory/</code> 讓 Claude 了解專案結構</li>
+                                    <li><strong>搜尋功能</strong>：使用 <code class="bg-purple-100 dark:bg-purple-800 px-1 rounded">/search</code> 在檔案中搜尋特定內容</li>
+                                    <li><strong>工具整合</strong>：Claude 可以執行檔案操作、搜尋、編輯等工具命令</li>
+                                    <li><strong>記憶體管理</strong>：使用 <code class="bg-purple-100 dark:bg-purple-800 px-1 rounded">/memory</code> 管理專案上下文和記憶體</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Section: CLI 標誌和選項 -->
                     <div id="claude-content-flags" class="claude-tab-content mb-10 hidden">
-                        <h3 class="text-2xl font-semibold text-slate-800 border-b pb-2 mb-4">CLI 標誌和選項</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white border border-slate-200">
-                                <thead class="bg-slate-50">
-                                    <tr>
-                                        <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">標誌</th>
-                                        <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-slate-700">
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">-p</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">無頭模式（程序化使用）</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--output-format json</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">JSON 輸出格式</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--dangerously-skip-permissions</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">跳過所有權限確認</td></tr>
-                                    <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--verbose</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">詳細日誌</td></tr>
-                                </tbody>
-                            </table>
+                        <h3 class="text-2xl font-semibold text-slate-800 border-b pb-2 mb-4">⚑ CLI 標誌和選項</h3>
+                        
+                        <!-- 基本標誌 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">基本標誌</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">標誌</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">範例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">-p, --prompt</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">無頭模式（程序化使用）</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude -p "analyze this code"</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">-v, --version</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">顯示版本資訊</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --version</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">-h, --help</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">顯示幫助資訊</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --help</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--verbose</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">詳細日誌輸出</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --verbose</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--quiet</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">靜默模式</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --quiet</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 輸出格式標誌 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">輸出格式標誌</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">標誌</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">範例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--output-format json</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">JSON 輸出格式</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --output-format json</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--output-format text</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">純文字輸出格式</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --output-format text</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--output-format markdown</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">Markdown 輸出格式</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --output-format markdown</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--output-format code</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">程式碼輸出格式</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --output-format code</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 權限和安全標誌 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">權限和安全標誌</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">標誌</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">範例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--dangerously-skip-permissions</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">跳過所有權限確認</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --dangerously-skip-permissions</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--permissions</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">設定特定權限</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --permissions read,write</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--no-permissions</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">禁用所有權限</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --no-permissions</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--safe-mode</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">安全模式（限制工具使用）</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --safe-mode</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 模型和配置標誌 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">模型和配置標誌</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white border border-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">標誌</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">功能</th>
+                                            <th class="px-6 py-3 border-b-2 border-slate-200 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">範例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-700">
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--model</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">指定 AI 模型</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --model claude-3-sonnet</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--temperature</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">設定創意度（0-1）</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --temperature 0.7</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--max-tokens</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">設定最大輸出長度</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --max-tokens 1000</code></td></tr>
+                                        <tr><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200 font-mono">--config</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200">指定配置檔案</td><td class="px-6 py-4 whitespace-nowrap border-b border-slate-200"><code class="bg-slate-100 px-1 rounded">claude --config .claude/config.json</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 使用技巧 -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-slate-700 mb-3">使用技巧</h4>
+                            <div class="bg-orange-50 dark:bg-orange-900/20 border-l-4 border-orange-500 p-4 rounded-r-lg">
+                                <ul class="text-orange-700 dark:text-orange-300 space-y-2">
+                                    <li><strong>無頭模式</strong>：使用 <code class="bg-orange-100 dark:bg-orange-800 px-1 rounded">-p</code> 進行自動化腳本和 CI/CD 整合</li>
+                                    <li><strong>JSON 輸出</strong>：使用 <code class="bg-orange-100 dark:bg-orange-800 px-1 rounded">--output-format json</code> 方便程式化處理</li>
+                                    <li><strong>安全模式</strong>：在生產環境使用 <code class="bg-orange-100 dark:bg-orange-800 px-1 rounded">--safe-mode</code> 限制工具使用</li>
+                                    <li><strong>權限控制</strong>：使用 <code class="bg-orange-100 dark:bg-orange-800 px-1 rounded">--permissions</code> 精確控制檔案操作權限</li>
+                                    <li><strong>模型選擇</strong>：根據需求選擇不同模型，如 <code class="bg-orange-100 dark:bg-orange-800 px-1 rounded">claude-3-sonnet</code> 或 <code class="bg-orange-100 dark:bg-orange-800 px-1 rounded">claude-3-haiku</code></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
@@ -2710,6 +3037,42 @@ doskey ..=cd ..</code></pre>
                 { type: 'Node.js', category: 'npm 基本操作', command: 'npm uninstall', description: '移除套件', tags: ['nodejs', 'npm', 'uninstall', 'remove', 'basic'] },
                 // Kubernetes 指令
                 { type: 'Kubernetes', category: '基本操作', command: 'kubectl get', description: '列出資源', tags: ['kubernetes', 'k8s', 'kubectl', 'get', 'list', 'basic'] },
+                // Claude Code 指令
+                { type: 'Claude Code', category: '安裝與設定', command: 'npm install -g @anthropic-ai/claude-code', description: '全域安裝 Claude Code', tags: ['claude', 'install', 'npm', 'global', 'setup'] },
+                { type: 'Claude Code', category: '安裝與設定', command: 'claude --version', description: '驗證安裝版本', tags: ['claude', 'version', 'check', 'setup'] },
+                { type: 'Claude Code', category: '安裝與設定', command: 'claude /init', description: '初始化專案（建立 .claude 目錄）', tags: ['claude', 'init', 'project', 'setup'] },
+                { type: 'Claude Code', category: '安裝與設定', command: 'claude /config', description: '查看專案設定', tags: ['claude', 'config', 'settings', 'setup'] },
+                { type: 'Claude Code', category: '基本快捷鍵', command: 'Ctrl + C', description: '取消當前輸入或生成', tags: ['claude', 'shortcut', 'cancel', 'interrupt'] },
+                { type: 'Claude Code', category: '基本快捷鍵', command: 'Ctrl + D', description: '退出 Claude Code 會話', tags: ['claude', 'shortcut', 'exit', 'quit'] },
+                { type: 'Claude Code', category: '基本快捷鍵', command: 'Ctrl + L', description: '清除螢幕', tags: ['claude', 'shortcut', 'clear', 'screen'] },
+                { type: 'Claude Code', category: '基本快捷鍵', command: 'Esc', description: '停止 Claude 執行', tags: ['claude', 'shortcut', 'stop', 'interrupt'] },
+                { type: 'Claude Code', category: '基本快捷鍵', command: 'Ctrl + R', description: '反向搜尋歷史', tags: ['claude', 'shortcut', 'search', 'history'] },
+                { type: 'Claude Code', category: '基本快捷鍵', command: 'Tab', description: '自動補全檔案路徑和命令', tags: ['claude', 'shortcut', 'autocomplete', 'tab'] },
+                { type: 'Claude Code', category: '核心命令', command: '/help', description: '顯示所有可用命令', tags: ['claude', 'command', 'help', 'guide'] },
+                { type: 'Claude Code', category: '核心命令', command: '/clear', description: '清除對話歷史', tags: ['claude', 'command', 'clear', 'history'] },
+                { type: 'Claude Code', category: '核心命令', command: '/model', description: '切換 AI 模型', tags: ['claude', 'command', 'model', 'switch'] },
+                { type: 'Claude Code', category: '核心命令', command: '/memory', description: '管理專案記憶體', tags: ['claude', 'command', 'memory', 'management'] },
+                { type: 'Claude Code', category: '檔案引用', command: '@filename', description: '引用檔案內容', tags: ['claude', 'file', 'reference', 'content'] },
+                { type: 'Claude Code', category: '檔案引用', command: '@directory/', description: '引用目錄列表', tags: ['claude', 'directory', 'reference', 'list'] },
+                { type: 'Claude Code', category: '檔案引用', command: '@filename:line', description: '引用特定行', tags: ['claude', 'file', 'line', 'reference'] },
+                { type: 'Claude Code', category: '檔案引用', command: '@filename:function', description: '引用特定函數', tags: ['claude', 'file', 'function', 'reference'] },
+                { type: 'Claude Code', category: '專案管理', command: '/search', description: '搜尋檔案內容', tags: ['claude', 'search', 'content', 'file'] },
+                { type: 'Claude Code', category: '專案管理', command: '/find', description: '尋找檔案', tags: ['claude', 'find', 'file', 'locate'] },
+                { type: 'Claude Code', category: '專案管理', command: '/tree', description: '顯示目錄結構', tags: ['claude', 'tree', 'directory', 'structure'] },
+                { type: 'Claude Code', category: '專案管理', command: '/status', description: '查看專案狀態', tags: ['claude', 'status', 'project', 'info'] },
+                { type: 'Claude Code', category: '工具命令', command: '/edit', description: '編輯檔案', tags: ['claude', 'edit', 'file', 'modify'] },
+                { type: 'Claude Code', category: '工具命令', command: '/create', description: '建立檔案', tags: ['claude', 'create', 'file', 'new'] },
+                { type: 'Claude Code', category: '工具命令', command: '/run', description: '執行命令', tags: ['claude', 'run', 'execute', 'command'] },
+                { type: 'Claude Code', category: '工具命令', command: '/test', description: '執行測試', tags: ['claude', 'test', 'execute', 'testing'] },
+                { type: 'Claude Code', category: 'CLI 標誌', command: '-p, --prompt', description: '無頭模式（程序化使用）', tags: ['claude', 'flag', 'headless', 'automation'] },
+                { type: 'Claude Code', category: 'CLI 標誌', command: '--output-format json', description: 'JSON 輸出格式', tags: ['claude', 'flag', 'json', 'output'] },
+                { type: 'Claude Code', category: 'CLI 標誌', command: '--dangerously-skip-permissions', description: '跳過所有權限確認', tags: ['claude', 'flag', 'permissions', 'skip'] },
+                { type: 'Claude Code', category: 'CLI 標誌', command: '--verbose', description: '詳細日誌輸出', tags: ['claude', 'flag', 'verbose', 'logging'] },
+                { type: 'Claude Code', category: 'CLI 標誌', command: '--model', description: '指定 AI 模型', tags: ['claude', 'flag', 'model', 'specify'] },
+                { type: 'Claude Code', category: 'CLI 標誌', command: '--temperature', description: '設定創意度（0-1）', tags: ['claude', 'flag', 'temperature', 'creativity'] },
+                { type: 'Claude Code', category: 'CLI 標誌', command: '--max-tokens', description: '設定最大輸出長度', tags: ['claude', 'flag', 'max-tokens', 'length'] },
+                { type: 'Claude Code', category: 'CLI 標誌', command: '--permissions', description: '設定特定權限', tags: ['claude', 'flag', 'permissions', 'control'] },
+                { type: 'Claude Code', category: 'CLI 標誌', command: '--safe-mode', description: '安全模式（限制工具使用）', tags: ['claude', 'flag', 'safe-mode', 'security'] },
                 { type: 'Kubernetes', category: '基本操作', command: 'kubectl apply', description: '部署資源', tags: ['kubernetes', 'k8s', 'kubectl', 'apply', 'deploy', 'basic'] },
                 { type: 'Kubernetes', category: '基本操作', command: 'kubectl delete', description: '刪除資源', tags: ['kubernetes', 'k8s', 'kubectl', 'delete', 'remove', 'basic'] },
                 { type: 'Kubernetes', category: '基本操作', command: 'kubectl describe', description: '查看詳細資訊', tags: ['kubernetes', 'k8s', 'kubectl', 'describe', 'info', 'basic'] },
