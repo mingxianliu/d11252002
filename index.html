@@ -558,15 +558,14 @@
 
         // 掃描技術文章資料夾
         async function scanArticlesFolder() {
+            // 在GitHub Pages環境下，直接使用動態掃描
             try {
-                const response = await fetch('/api/scan-articles');
-                const articles = await response.json();
+                const articles = await scanArticlesDirectory();
                 generateArticlesSubmenu(articles);
             } catch (error) {
                 console.error('掃描技術文章資料夾失敗:', error);
-                // 動態掃描技術文章資料夾
-                const articles = await scanArticlesDirectory();
-                generateArticlesSubmenu(articles);
+                // 如果動態掃描失敗，使用預設項目
+                generateArticlesSubmenu(['React-Hooks-最佳實踐.html', 'Docker-容器化部署指南.html']);
             }
         }
 
@@ -676,15 +675,14 @@
 
         // 掃描專案作品資料夾
         async function scanProjectsFolder() {
+            // 在GitHub Pages環境下，直接使用動態掃描
             try {
-                const response = await fetch('/api/scan-projects');
-                const projects = await response.json();
+                const projects = await scanProjectsDirectory();
                 generateProjectSubmenu(projects);
             } catch (error) {
                 console.error('掃描專案資料夾失敗:', error);
-                // 動態掃描專案作品資料夾
-                const projects = await scanProjectsDirectory();
-                generateProjectSubmenu(projects);
+                // 如果動態掃描失敗，使用預設項目
+                generateProjectSubmenu(['智慧校園', '智慧工地']);
             }
         }
 
@@ -723,6 +721,7 @@
                     const response = await fetch(`專案作品/${project}/index.html`, { method: 'HEAD' });
                     if (response.ok) {
                         projects.push(project);
+                        console.log(`找到專案: ${project}`);
                     }
                 } catch (error) {
                     // 如果檔案不存在，跳過
@@ -732,9 +731,11 @@
             
             // 如果沒有找到任何專案，使用預設項目
             if (projects.length === 0) {
+                console.log('沒有找到任何專案，使用預設項目');
                 projects.push('智慧校園', '智慧工地');
             }
             
+            console.log('最終專案列表:', projects);
             return projects;
         }
 
