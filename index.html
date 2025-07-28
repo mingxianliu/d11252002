@@ -793,49 +793,48 @@
         }
 
         // 顯示技術文章
-        function showArticle(articleName) {
+        async function showArticle(articleName) {
             try {
                 console.log('嘗試載入技術文章:', articleName);
                 
-                // 創建一個容器來包含iframe和返回按鈕
+                // 創建一個容器來包含文章內容和返回按鈕
                 const container = document.createElement('div');
-                container.className = 'relative w-full h-screen';
+                container.className = 'relative w-full h-full overflow-y-auto p-6';
                 
                 // 創建返回按鈕
                 const backButton = document.createElement('button');
-                backButton.className = 'absolute top-4 left-4 z-50 px-4 py-2 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 rounded-lg shadow-lg hover:bg-slate-700 dark:hover:bg-slate-300 transition-colors';
+                backButton.className = 'fixed top-20 left-6 z-50 px-4 py-2 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 rounded-lg shadow-lg hover:bg-slate-700 dark:hover:bg-slate-300 transition-colors';
                 backButton.innerHTML = '← 返回';
                 backButton.onclick = () => {
-                    // 移除容器
-                    container.remove();
+                    // 移除返回按鈕
+                    backButton.remove();
                     // 重新載入首頁
                     loadPage('home', document.querySelector('.nav-item'));
                 };
                 
-                // 在當前頁面載入技術文章內容
-                const iframe = document.createElement('iframe');
-                iframe.src = `技術文章/${articleName}`;
-                iframe.className = 'w-full h-screen border-0';
+                // 使用fetch載入文章內容
+                const response = await fetch(`技術文章/${articleName}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
                 
-                // 添加載入錯誤處理
-                iframe.onerror = function() {
-                    console.error('iframe載入失敗:', articleName);
-                    alert(`無法載入技術文章：${articleName}\n\n請確保您正在使用HTTP服務器訪問網站（如 http://localhost:8001），而不是直接打開HTML檔案。`);
-                };
+                const articleContent = await response.text();
                 
-                // 添加載入成功處理
-                iframe.onload = function() {
-                    console.log('技術文章載入成功:', articleName);
-                };
+                // 創建文章內容容器
+                const articleContainer = document.createElement('div');
+                articleContainer.className = 'prose prose-slate dark:prose-invert max-w-none';
+                articleContainer.innerHTML = articleContent;
                 
-                // 將返回按鈕和iframe添加到容器
-                container.appendChild(backButton);
-                container.appendChild(iframe);
+                // 將文章內容添加到容器
+                container.appendChild(articleContainer);
                 
                 // 清空當前內容並載入容器
                 const contentArea = document.getElementById('page-content');
                 contentArea.innerHTML = '';
                 contentArea.appendChild(container);
+                
+                // 添加返回按鈕到body
+                document.body.appendChild(backButton);
                 
                 // 更新頁面標題
                 document.getElementById('page-title').textContent = '技術文章';
@@ -845,9 +844,11 @@
                     content.classList.add('hidden');
                 });
                 
+                console.log('技術文章載入成功:', articleName);
+                
             } catch (error) {
                 console.error('顯示技術文章時發生錯誤:', error);
-                alert(`載入技術文章時發生錯誤：${error.message}\n\n請確保您正在使用HTTP服務器訪問網站。`);
+                alert(`載入技術文章時發生錯誤：${error.message}\n\n請確保您正在使用HTTP服務器訪問網站（如 http://localhost:8001），而不是直接打開HTML檔案。`);
             }
         }
 
