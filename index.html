@@ -100,9 +100,12 @@
                 <button onclick="loadPage('articles', this)" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
                     技術文章
                 </button>
-                <button onclick="loadPage('projects', this)" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                <button onclick="toggleProjectsSubmenu()" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
                     專案作品
                 </button>
+                <div id="projects-submenu" class="ml-4 space-y-1 hidden">
+                    <!-- 動態生成的專案子項目將在這裡 -->
+                </div>
                 <button onclick="loadPage('contact', this)" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
                     聯絡資訊
                 </button>
@@ -269,6 +272,18 @@
         <footer class="mt-12 text-center text-sm text-slate-800 dark:text-slate-200 py-6 border-t border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
             Copyright © 2025 d11252002@mail.ntust.edu.tw All Rights Reserved.
         </footer>
+    </div>
+
+    <!-- 密碼輸入模態框 -->
+    <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">請輸入密碼</h3>
+            <input type="password" id="password-input" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 mb-4" placeholder="請輸入密碼">
+            <div class="flex space-x-3">
+                <button onclick="submitPassword()" class="flex-1 px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors">確認</button>
+                <button onclick="closePasswordModal()" class="flex-1 px-4 py-2 bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-400 dark:hover:bg-slate-500 transition-colors">取消</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -494,6 +509,78 @@
             }
         }
 
+        // 專案作品子選單切換
+        function toggleProjectsSubmenu() {
+            const submenu = document.getElementById('projects-submenu');
+            submenu.classList.toggle('hidden');
+        }
+
+        // 掃描專案作品資料夾
+        async function scanProjectsFolder() {
+            try {
+                const response = await fetch('/api/scan-projects');
+                const projects = await response.json();
+                generateProjectSubmenu(projects);
+            } catch (error) {
+                console.error('掃描專案資料夾失敗:', error);
+                // 如果 API 不可用，使用預設項目
+                generateProjectSubmenu(['智慧校園']);
+            }
+        }
+
+        // 生成專案子選單
+        function generateProjectSubmenu(projects) {
+            const submenu = document.getElementById('projects-submenu');
+            submenu.innerHTML = '';
+            
+            projects.forEach(project => {
+                const button = document.createElement('button');
+                button.className = 'w-full text-left px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-600 text-slate-600 dark:text-slate-400 text-sm hover:bg-slate-200 dark:hover:bg-slate-500 transition-colors';
+                button.textContent = project;
+                button.onclick = () => showPasswordModal(project);
+                submenu.appendChild(button);
+            });
+        }
+
+        // 顯示密碼輸入模態框
+        function showPasswordModal(projectName) {
+            const modal = document.getElementById('password-modal');
+            const input = document.getElementById('password-input');
+            modal.dataset.project = projectName;
+            modal.classList.remove('hidden');
+            input.focus();
+            input.value = '';
+        }
+
+        // 關閉密碼輸入模態框
+        function closePasswordModal() {
+            const modal = document.getElementById('password-modal');
+            modal.classList.add('hidden');
+        }
+
+        // 提交密碼
+        function submitPassword() {
+            const modal = document.getElementById('password-modal');
+            const input = document.getElementById('password-input');
+            const projectName = modal.dataset.project;
+            const password = input.value;
+            
+            if (password === '54850387') {
+                // 密碼正確，開啟全螢幕新視窗
+                const url = `/專案作品/${projectName}/index.html`;
+                const newWindow = window.open(url, '_blank', 'fullscreen=yes,scrollbars=yes,resizable=yes');
+                if (newWindow) {
+                    newWindow.focus();
+                }
+                closePasswordModal();
+            } else {
+                // 密碼錯誤
+                alert('密碼錯誤！');
+                input.value = '';
+                input.focus();
+            }
+        }
+
         // 側邊欄切換功能
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -514,6 +601,9 @@
             
             // 載入首頁
             loadPage('home', document.querySelector('.nav-item'));
+            
+            // 掃描專案作品資料夾
+            scanProjectsFolder();
         });
     </script>
 </body>

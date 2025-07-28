@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧校園專案</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        
+        /* 深色模式樣式 */
+        .dark .bg-white {
+            background-color: #1e293b;
+        }
+        .dark .text-slate-900 {
+            color: #f1f5f9;
+        }
+        .dark .text-slate-600 {
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 min-h-screen">
+    <div class="container mx-auto p-8">
+        <!-- 專案標題 -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">智慧校園專案</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400">打造未來教育環境的智慧化解決方案</p>
+        </header>
+
+        <!-- 專案概述 -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">專案概述</h2>
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg">
+                <p class="text-lg text-slate-700 dark:text-slate-300 mb-6">
+                    智慧校園專案旨在通過先進的技術手段，為教育機構提供全方位的智慧化解決方案。
+                    該專案整合了物聯網、人工智慧、大數據分析等技術，實現校園管理的數位化轉型。
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-sky-500 mb-2">100%</div>
+                        <div class="text-slate-600 dark:text-slate-400">數位化覆蓋</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-500 mb-2">24/7</div>
+                        <div class="text-slate-600 dark:text-slate-400">全天候監控</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-purple-500 mb-2">50%</div>
+                        <div class="text-slate-600 dark:text-slate-400">效率提升</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心功能 -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">核心功能</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">智慧門禁系統</h3>
+                    <p class="text-slate-600 dark:text-slate-400">整合人臉識別、指紋辨識等多重驗證方式，確保校園安全。</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">環境監控</h3>
+                    <p class="text-slate-600 dark:text-slate-400">實時監控溫度、濕度、空氣品質等環境參數，營造最佳學習環境。</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">能源管理</h3>
+                    <p class="text-slate-600 dark:text-slate-400">智能控制照明、空調等設備，實現節能減碳目標。</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">教學輔助</h3>
+                    <p class="text-slate-600 dark:text-slate-400">提供互動式教學工具，提升教學效果和學生參與度。</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">數據分析</h3>
+                    <p class="text-slate-600 dark:text-slate-400">收集和分析校園運營數據，為決策提供科學依據。</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">移動應用</h3>
+                    <p class="text-slate-600 dark:text-slate-400">提供便捷的移動端應用，隨時隨地管理校園事務。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 技術架構 -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">技術架構</h2>
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">前端技術</h3>
+                        <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <li>• React.js - 現代化前端框架</li>
+                            <li>• TypeScript - 類型安全的 JavaScript</li>
+                            <li>• Tailwind CSS - 實用優先的 CSS 框架</li>
+                            <li>• Chart.js - 數據可視化</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">後端技術</h3>
+                        <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <li>• Node.js - 服務器端運行環境</li>
+                            <li>• Express.js - Web 應用框架</li>
+                            <li>• MongoDB - NoSQL 數據庫</li>
+                            <li>• Socket.io - 實時通信</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 專案進度 -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">專案進度</h2>
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg">
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-700 dark:text-slate-300">需求分析</span>
+                        <span class="text-green-500 font-semibold">100%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-700 dark:text-slate-300">系統設計</span>
+                        <span class="text-blue-500 font-semibold">85%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-700 dark:text-slate-300">開發實現</span>
+                        <span class="text-yellow-500 font-semibold">60%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%"></div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-700 dark:text-slate-300">測試部署</span>
+                        <span class="text-gray-500 font-semibold">30%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                        <div class="bg-gray-500 h-2 rounded-full" style="width: 30%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 團隊成員 -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">團隊成員</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-sky-100 dark:bg-sky-900 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-sky-600 dark:text-sky-400">PM</span>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">專案經理</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">負責專案規劃與協調</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-green-600 dark:text-green-400">FE</span>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">前端工程師</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">負責用戶介面開發</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">BE</span>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">後端工程師</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">負責服務器端開發</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-orange-600 dark:text-orange-400">QA</span>
+                    </div>
+                    <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">測試工程師</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">負責品質保證</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 聯絡資訊 -->
+        <section class="text-center">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">聯絡資訊</h2>
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg">
+                <p class="text-lg text-slate-700 dark:text-slate-300 mb-4">
+                    如果您對智慧校園專案有任何疑問或建議，歡迎與我們聯繫。
+                </p>
+                <div class="flex justify-center space-x-6">
+                    <a href="mailto:contact@smartcampus.com" class="text-sky-500 hover:text-sky-600 transition-colors">
+                        聯絡我們
+                    </a>
+                    <a href="#" class="text-sky-500 hover:text-sky-600 transition-colors">
+                        專案文檔
+                    </a>
+                    <a href="#" class="text-sky-500 hover:text-sky-600 transition-colors">
+                        GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 按 ESC 鍵關閉頁面
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                window.close();
+            }
+        });
+    </script>
+</body>
+</html> 
