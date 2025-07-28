@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>d11252002 - 個人技術部落格</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        
+        /* 深色模式樣式 */
+        .dark .bg-white {
+            background-color: #1e293b;
+        }
+        .dark .text-slate-900 {
+            color: #f1f5f9;
+        }
+        .dark .text-slate-600 {
+            color: #cbd5e1;
+        }
+        .dark .text-slate-700 {
+            color: #e2e8f0;
+        }
+        .dark .text-slate-800 {
+            color: #f1f5f9;
+        }
+        .dark .border-slate-200 {
+            border-color: #475569;
+        }
+        .dark .bg-slate-50 {
+            background-color: #0f172a;
+        }
+        .dark .bg-slate-100 {
+            background-color: #1e293b;
+        }
+        .dark .bg-slate-200 {
+            background-color: #334155;
+        }
+        .dark .bg-slate-800 {
+            background-color: #1e293b;
+        }
+        .dark .bg-slate-900 {
+            background-color: #0f172a;
+        }
+        
+        /* 側邊欄樣式 */
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+        
+        .content-area {
+            transition: margin-left 0.3s ease-in-out;
+        }
+        
+        .content-area.expanded {
+            margin-left: 0;
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                z-index: 50;
+            }
+            
+            .content-area {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+
+    <!-- 側邊欄 -->
+    <div id="sidebar" class="sidebar fixed left-0 top-0 h-full w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 shadow-lg z-40">
+        <div class="p-6">
+            <!-- 標題區域 -->
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">d11252002</h1>
+                <p class="text-sm text-slate-600 dark:text-slate-400">個人技術部落格與工具集</p>
+            </div>
+            
+            <!-- 導航選單 -->
+            <nav class="space-y-2">
+                <button onclick="loadPage('home')" class="nav-item active w-full text-left px-4 py-3 rounded-lg bg-sky-500 text-white font-medium hover:bg-sky-600 transition-colors">
+                    🏠 首頁
+                </button>
+                <button onclick="loadPage('commands')" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    📚 互動式命令指南
+                </button>
+                <button onclick="loadPage('articles')" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    📝 技術文章
+                </button>
+                <button onclick="loadPage('projects')" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    🛠️ 專案作品
+                </button>
+                <button onclick="loadPage('analytics')" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    📊 數據分析
+                </button>
+                <button onclick="loadPage('contact')" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    📞 聯絡資訊
+                </button>
+            </nav>
+            
+            <!-- 主題切換 -->
+            <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
+                <button id="theme-toggle" class="w-full px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors flex items-center justify-center" title="切換深色/淺色模式">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path class="sun-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        <path class="moon-icon hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                    切換主題
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主內容區域 -->
+    <div id="content-area" class="content-area ml-64 min-h-screen">
+        <!-- 頂部導航欄 -->
+        <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <button id="sidebar-toggle" class="mr-4 p-2 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <h2 id="page-title" class="text-xl font-semibold text-slate-900 dark:text-slate-100">首頁</h2>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-slate-600 dark:text-slate-400">d11252002@mail.ntust.edu.tw</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 頁面內容容器 -->
+        <main id="page-content" class="p-6">
+            <!-- 首頁內容 -->
+            <div id="home-content" class="page-content">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-12">
+                        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6">歡迎來到我的技術部落格</h1>
+                        <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">這裡是我分享技術心得、專案作品和實用工具的地方</p>
+                    </div>
+
+                    <!-- 特色區塊 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                            <div class="text-3xl mb-4">📚</div>
+                            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">互動式命令指南</h3>
+                            <p class="text-slate-600 dark:text-slate-400">彙整多平台常用命令與快捷鍵，助您提升開發效率</p>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                            <div class="text-3xl mb-4">📝</div>
+                            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">技術文章</h3>
+                            <p class="text-slate-600 dark:text-slate-400">分享程式開發、系統設計和技術趨勢的心得</p>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                            <div class="text-3xl mb-4">🛠️</div>
+                            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">專案作品</h3>
+                            <p class="text-slate-600 dark:text-slate-400">展示個人開發的應用程式和工具</p>
+                        </div>
+                    </div>
+
+                    <!-- 最新動態 -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">最新動態</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                                <div class="text-2xl">📚</div>
+                                <div>
+                                    <h4 class="font-semibold text-slate-900 dark:text-slate-100">互動式命令指南上線</h4>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400">2025-01-27</p>
+                                    <p class="text-slate-700 dark:text-slate-300 mt-2">完成了一個功能完整的互動式命令指南，包含 Gemini CLI、Claude Code、Shell 指令等多平台工具。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 其他頁面內容將通過 JavaScript 動態載入 -->
+            <div id="commands-content" class="page-content hidden">
+                <iframe src="index.html" class="w-full h-screen border-0"></iframe>
+            </div>
+
+            <div id="articles-content" class="page-content hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">技術文章</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-8">這裡將展示我的技術文章和心得分享</p>
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md text-center">
+                        <div class="text-6xl mb-4">📝</div>
+                        <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">文章正在撰寫中</h3>
+                        <p class="text-slate-600 dark:text-slate-400">敬請期待更多精彩的技術分享</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="projects-content" class="page-content hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">專案作品</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-8">展示我的開發專案和作品</p>
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md text-center">
+                        <div class="text-6xl mb-4">🛠️</div>
+                        <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">專案展示準備中</h3>
+                        <p class="text-slate-600 dark:text-slate-400">更多精彩專案即將上線</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="analytics-content" class="page-content hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">數據分析</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-8">分享數據分析和視覺化作品</p>
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md text-center">
+                        <div class="text-6xl mb-4">📊</div>
+                        <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">數據分析專案</h3>
+                        <p class="text-slate-600 dark:text-slate-400">敬請期待精彩的數據分析作品</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contact-content" class="page-content hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">聯絡資訊</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-8">歡迎與我聯繫交流</p>
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">聯絡方式</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-2xl">📧</span>
+                                        <span class="text-slate-700 dark:text-slate-300">d11252002@mail.ntust.edu.tw</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-2xl">🎓</span>
+                                        <span class="text-slate-700 dark:text-slate-300">國立台灣科技大學</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-2xl">📍</span>
+                                        <span class="text-slate-700 dark:text-slate-300">台北市</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">技術專長</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-sky-100 dark:bg-sky-900 text-sky-800 dark:text-sky-200 rounded-full text-sm">JavaScript</span>
+                                    <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm">Python</span>
+                                    <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm">React</span>
+                                    <span class="px-3 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-sm">Node.js</span>
+                                    <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Docker</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 主題切換功能
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // 頁面載入功能
+        function loadPage(pageName) {
+            // 隱藏所有頁面內容
+            const pageContents = document.querySelectorAll('.page-content');
+            pageContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // 顯示選中的頁面
+            const targetContent = document.getElementById(pageName + '-content');
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+            }
+
+            // 更新頁面標題
+            const pageTitles = {
+                'home': '首頁',
+                'commands': '互動式命令指南',
+                'articles': '技術文章',
+                'projects': '專案作品',
+                'analytics': '數據分析',
+                'contact': '聯絡資訊'
+            };
+            document.getElementById('page-title').textContent = pageTitles[pageName] || '首頁';
+
+            // 更新導航選單狀態
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('bg-sky-500', 'text-white', 'hover:bg-sky-600');
+                item.classList.add('bg-slate-200', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-300', 'hover:bg-slate-300', 'dark:hover:bg-slate-600');
+            });
+
+            // 激活當前選單項目
+            const activeNavItem = event.target;
+            activeNavItem.classList.remove('bg-slate-200', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-300', 'hover:bg-slate-300', 'dark:hover:bg-slate-600');
+            activeNavItem.classList.add('bg-sky-500', 'text-white', 'hover:bg-sky-600');
+        }
+
+        // 側邊欄切換功能
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const contentArea = document.getElementById('content-area');
+            
+            sidebar.classList.toggle('collapsed');
+            contentArea.classList.toggle('expanded');
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            
+            // 綁定事件
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+            document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
+            
+            // 載入首頁
+            loadPage('home');
+        });
+    </script>
+</body>
+</html> 
