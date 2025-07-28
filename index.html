@@ -91,23 +91,23 @@
             
             <!-- 導航選單 -->
             <nav class="space-y-2">
-                <button onclick="loadPage('home')" class="nav-item active w-full text-left px-4 py-3 rounded-lg bg-sky-500 text-white font-medium hover:bg-sky-600 transition-colors">
-                    🏠 首頁
+                <button onclick="loadPage('home', this)" class="nav-item active w-full text-left px-4 py-3 rounded-lg bg-sky-500 text-white font-medium hover:bg-sky-600 transition-colors">
+                    首頁
                 </button>
-                <button onclick="loadPage('commands')" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
-                    📚 互動式命令指南
+                <button onclick="loadPage('commands', this)" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    互動式命令指南
                 </button>
-                <button onclick="loadPage('articles')" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
-                    📝 技術文章
+                <button onclick="loadPage('articles', this)" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    技術文章
                 </button>
-                <button onclick="loadPage('projects')" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
-                    🛠️ 專案作品
+                <button onclick="loadPage('projects', this)" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    專案作品
                 </button>
-                <button onclick="loadPage('analytics')" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
-                    📊 數據分析
+                <button onclick="loadPage('analytics', this)" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    數據分析
                 </button>
-                <button onclick="loadPage('contact')" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
-                    📞 聯絡資訊
+                <button onclick="loadPage('contact', this)" class="nav-item w-full text-left px-4 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                    聯絡資訊
                 </button>
             </nav>
             
@@ -138,7 +138,7 @@
                     <h2 id="page-title" class="text-xl font-semibold text-slate-900 dark:text-slate-100">首頁</h2>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm text-slate-600 dark:text-slate-400">d11252002@mail.ntust.edu.tw</span>
+                    <!-- 移除郵箱地址 -->
                 </div>
             </div>
         </header>
@@ -156,17 +156,14 @@
                     <!-- 特色區塊 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                            <div class="text-3xl mb-4">📚</div>
                             <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">互動式命令指南</h3>
                             <p class="text-slate-600 dark:text-slate-400">彙整多平台常用命令與快捷鍵，助您提升開發效率</p>
                         </div>
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                            <div class="text-3xl mb-4">📝</div>
                             <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">技術文章</h3>
                             <p class="text-slate-600 dark:text-slate-400">分享程式開發、系統設計和技術趨勢的心得</p>
                         </div>
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                            <div class="text-3xl mb-4">🛠️</div>
                             <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">專案作品</h3>
                             <p class="text-slate-600 dark:text-slate-400">展示個人開發的應用程式和工具</p>
                         </div>
@@ -177,7 +174,6 @@
                         <h3 class="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">最新動態</h3>
                         <div class="space-y-4">
                             <div class="flex items-start space-x-4 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                                <div class="text-2xl">📚</div>
                                 <div>
                                     <h4 class="font-semibold text-slate-900 dark:text-slate-100">互動式命令指南上線</h4>
                                     <p class="text-sm text-slate-600 dark:text-slate-400">2025-01-27</p>
@@ -199,7 +195,6 @@
                     <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">技術文章</h2>
                     <p class="text-slate-600 dark:text-slate-400 mb-8">這裡將展示我的技術文章和心得分享</p>
                     <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md text-center">
-                        <div class="text-6xl mb-4">📝</div>
                         <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">文章正在撰寫中</h3>
                         <p class="text-slate-600 dark:text-slate-400">敬請期待更多精彩的技術分享</p>
                     </div>
@@ -268,6 +263,11 @@
                 </div>
             </div>
         </main>
+        
+        <!-- 版權宣告 -->
+        <footer class="mt-12 text-center text-sm text-slate-800 dark:text-slate-200 py-6 border-t border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
+            Copyright © 2025 d11252002@mail.ntust.edu.tw All Rights Reserved.
+        </footer>
     </div>
 
     <script>
@@ -285,7 +285,7 @@
         }
 
         // 頁面載入功能
-        function loadPage(pageName) {
+        function loadPage(pageName, clickedElement) {
             // 隱藏所有頁面內容
             const pageContents = document.querySelectorAll('.page-content');
             pageContents.forEach(content => {
@@ -317,9 +317,10 @@
             });
 
             // 激活當前選單項目
-            const activeNavItem = event.target;
-            activeNavItem.classList.remove('bg-slate-200', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-300', 'hover:bg-slate-300', 'dark:hover:bg-slate-600');
-            activeNavItem.classList.add('bg-sky-500', 'text-white', 'hover:bg-sky-600');
+            if (clickedElement) {
+                clickedElement.classList.remove('bg-slate-200', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-300', 'hover:bg-slate-300', 'dark:hover:bg-slate-600');
+                clickedElement.classList.add('bg-sky-500', 'text-white', 'hover:bg-sky-600');
+            }
         }
 
         // 側邊欄切換功能
@@ -340,7 +341,7 @@
             document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
             
             // 載入首頁
-            loadPage('home');
+            loadPage('home', document.querySelector('.nav-item'));
         });
     </script>
 </body>
